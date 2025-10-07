@@ -1,9 +1,19 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+const getAuthHeaders = () => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+        return {
+            'Authorization': `Bearer ${token}`
+        };
+    }
+    return {};
+};
+
 export const resumeService = {
     getResumeData: async (userId) => {
         const response = await fetch(`${API_BASE_URL}/cv_parsing/${userId}`, {
-            credentials: 'include'
+            headers: getAuthHeaders()
         });
         if (!response.ok) {
             if (response.status === 404) return null;
@@ -15,9 +25,11 @@ export const resumeService = {
     uploadResume: async (file) => {
         const formData = new FormData();
         formData.append('file', file);
+        const headers = getAuthHeaders();
         const response = await fetch(`${API_BASE_URL}/cv_parsing/cv`, {
             method: 'POST',
             body: formData,
+            headers: headers,
             credentials: 'include',
         });
         if (!response.ok) {
@@ -26,6 +38,7 @@ export const resumeService = {
         }
         return response.json();
     },
+    
 
     deleteResume: async () => {
         const response = await fetch(`${API_BASE_URL}/cv_parsing/cv`, { 

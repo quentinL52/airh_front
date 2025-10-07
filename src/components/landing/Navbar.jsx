@@ -23,7 +23,7 @@ function Navbar() {
             <nav className="navbar">
                 <div className="container">
                     <div className="navbar-brand">
-                        <img src="/AIRH_logo.png" alt="AIrh Logo" className="logo-icon" />
+                        <img src="/images/AIRH_logo.png" alt="AIrh Logo" className="logo-icon" />
                     </div>
                     <button onClick={handleAuthButtonClick} className="cta-button">
                         Se connecter / s'inscrire

@@ -1,5 +1,5 @@
-import candidatImg from '../../assets/candidat.png';
-import recruteurImg from '../../assets/recruteur.png';
+import candidatImg from '../../../public/images/candidat.png';
+import recruteurImg from '../../../public/images/recruteur.png';
 
 function Features() {
   return (

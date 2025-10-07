@@ -1,11 +1,11 @@
-import candidatImg from '../../../public/images/candidat.png';
-import recruteurImg from '../../../public/images/recruteur.png';
+import candidatImg from '../../assets/candidat.png';
+import recruteurImg from '../../assets/recruteur.png';
 
 function Features() {
   return (
     <section className="features-section">
       <div className="feature-card">
-        <img src={candidatImg} alt="Candidat" className="feature-image" />
+        <img src="/candidat.png" alt="Candidat" className="feature-image" />
         <h2 className="feature-title">Pour les Candidats</h2>
         <ul className="feature-list">
           <li><strong>Entraînez-vous de manière ciblée :</strong> Nous travaillons à vous proposer des simulations basées sur les compétences clés recherchées dans les offres d'emploi et celles présentes dans votre CV.</li>
@@ -15,7 +15,7 @@ function Features() {
       </div>
 
       <div className="feature-card">
-        <img src={recruteurImg} alt="Recruteur" className="feature-image" />
+        <img src="/recruteur.png" alt="Recruteur" className="feature-image" />
         <h2 className="feature-title">Pour les Recruteurs</h2>
         <ul className="feature-list">
           <li><strong>Optimisez votre processus de sélection :</strong> Nous cherchons à vous offrir un outil pour évaluer les candidats de manière plus efficace et structurée.</li>

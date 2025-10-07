@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { authService } from '../../services/authService';
 import '../../style/Layout.css';
-import AIrh_logo from '../../assets/AIrh_logo.png';
 
 
 const Layout = ({ children, activeSection, onSectionChange, user }) => {
@@ -55,7 +54,7 @@ const Layout = ({ children, activeSection, onSectionChange, user }) => {
             <div className="sidebar">
                 <div className="sidebar-header">
                     <div className="app-logo">
-                        <img src={AIrh_logo} alt="Airh Logo" />
+                        <img src="/images/AIrh_logo.png" alt="AIrh Logo" className="logo-icon" />
                     </div>
                     <div className="workspace-title">Mon espace</div>
                 </div>

@@ -2,6 +2,13 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { resumeService } from '../../services/resumeService';
 import '../../style/ResumeTab.css';
 
+// Normalisation utilitaire pour sécuriser les rendus
+const toArray = (value) => {
+    if (Array.isArray(value)) return value;
+    if (value === null || value === undefined) return [];
+    return [value];
+};
+
 // --- NOUVEAU COMPOSANT : Affichage de l'Analyse Globale ---
 const CvAnalysisDisplay = ({ analyseGlobale }) => {
     if (!analyseGlobale) return <small>Aucune analyse globale disponible.</small>;
@@ -25,11 +32,11 @@ const CvAnalysisDisplay = ({ analyseGlobale }) => {
             <div className="cv-section">
                 <div className="cv-section-header">Compétences par Domaine</div>
                 <div className="cv-section-body">
-                    {analyseGlobale.competence_analysis?.map((domainData, domainIndex) => (
+                    {toArray(analyseGlobale.competence_analysis).map((domainData, domainIndex) => (
                         <div key={domainIndex} style={{ marginBottom: '1rem' }}>
                             <h6>{domainData.domain}</h6>
                             <div className="skills-container">
-                                {domainData.skills?.map((skillData, skillIndex) => (
+                                {toArray(domainData.skills).map((skillData, skillIndex) => (
                                     <span 
                                         key={skillIndex} 
                                         // Utilisation du niveau comme classe CSS pour la couleur
@@ -48,12 +55,12 @@ const CvAnalysisDisplay = ({ analyseGlobale }) => {
             <div className="cv-section">
                 <div className="cv-section-header">Analyse des Projets Pertinents</div>
                 <div className="cv-section-body">
-                    {analyseGlobale.project_analysis?.length > 0 ? (
-                        analyseGlobale.project_analysis.map((project, index) => (
+                    {toArray(analyseGlobale.project_analysis).length > 0 ? (
+                        toArray(analyseGlobale.project_analysis).map((project, index) => (
                             <div key={index} style={{ marginBottom: '1rem' }}>
                                 <p><strong>Titre:</strong> {project.title || 'N/A'}</p>
-                                <p><strong>Objectifs:</strong> {project.objectives?.join(' / ') || 'N/A'}</p>
-                                <p><strong>Skills démontrés:</strong> {project.skills_demonstrated?.join(', ') || 'N/A'}</p>
+                                <p><strong>Objectifs:</strong> {toArray(project.objectives).join(' / ') || 'N/A'}</p>
+                                <p><strong>Skills démontrés:</strong> {toArray(project.skills_demonstrated).join(', ') || 'N/A'}</p>
                             </div>
                         ))
                     ) : <small>Aucune analyse de projet.</small>}
@@ -66,11 +73,11 @@ const CvAnalysisDisplay = ({ analyseGlobale }) => {
                 <div className="cv-section-body">
                     <h6>Suggestions de carrière</h6>
                     <ul>
-                        {analyseGlobale.career_recommendations?.map((rec, index) => <li key={`car-${index}`}>{rec}</li>)}
+                        {toArray(analyseGlobale.career_recommendations).map((rec, index) => <li key={`car-${index}`}>{rec}</li>)}
                     </ul>
                     <h6 style={{marginTop: '1rem'}}>Améliorations du CV</h6>
                     <ul>
-                        {analyseGlobale.cv_improvement_suggestions?.map((sug, index) => <li key={`cv-${index}`}>{sug}</li>)}
+                        {toArray(analyseGlobale.cv_improvement_suggestions).map((sug, index) => <li key={`cv-${index}`}>{sug}</li>)}
                     </ul>
                 </div>
             </div>
@@ -100,11 +107,15 @@ const CvDataDisplay = ({ cvData }) => (
             <div className="cv-section-body">
                 <h6>Compétences Techniques</h6>
                 <div className="skills-container">
-                    {cvData.compétences?.hard_skills?.map(skill => <span key={skill} className="skill-badge hard">{skill}</span>) || <small>Aucune</small>}
+                    {toArray(cvData.compétences?.hard_skills).length > 0
+                        ? toArray(cvData.compétences?.hard_skills).map(skill => <span key={skill} className="skill-badge hard">{skill}</span>)
+                        : <small>Aucune</small>}
                 </div>
                 <h6 style={{marginTop: '1rem'}}>Compétences Comportementales</h6>
                 <div className="skills-container">
-                    {cvData.compétences?.soft_skills?.map(skill => <span key={skill} className="skill-badge soft">{skill}</span>) || <small>Aucune</small>}
+                    {toArray(cvData.compétences?.soft_skills).length > 0
+                        ? toArray(cvData.compétences?.soft_skills).map(skill => <span key={skill} className="skill-badge soft">{skill}</span>)
+                        : <small>Aucune</small>}
                 </div>
             </div>
         </div>
@@ -113,17 +124,17 @@ const CvDataDisplay = ({ cvData }) => (
         <div className="cv-section">
             <div className="cv-section-header">Expériences Professionnelles</div>
             <div className="cv-section-body">
-                {cvData.expériences?.length > 0 ? (
-                    cvData.expériences.map((exp, index) => (
+                {toArray(cvData.expériences).length > 0 ? (
+                    toArray(cvData.expériences).map((exp, index) => (
                         <div key={index} style={{ marginBottom: '1rem' }}>
                             <p><strong>Poste:</strong> {exp.Poste}</p>
                             <p><strong>Entreprise:</strong> {exp.Entreprise}</p>
                             <p><strong>Dates:</strong> {exp.start_date} - {exp.end_date}</p>
-                            {exp.responsabilités?.length > 0 && (
+                            {toArray(exp.responsabilités).length > 0 && (
                                 <>
                                     <strong>Responsabilités:</strong>
                                     <ul>
-                                        {exp.responsabilités.map((resp, i) => <li key={i}>{resp}</li>)}
+                                        {toArray(exp.responsabilités).map((resp, i) => <li key={i}>{resp}</li>)}
                                     </ul>
                                 </>
                             )}
@@ -137,20 +148,20 @@ const CvDataDisplay = ({ cvData }) => (
         <div className="cv-section">
             <div className="cv-section-header">Projets</div>
             <div className="cv-section-body">
-                {cvData.projets?.professional?.length > 0 || cvData.projets?.personal?.length > 0 ? (
+                {toArray(cvData.projets?.professional).length > 0 || toArray(cvData.projets?.personal).length > 0 ? (
                     <>
-                        {cvData.projets.professional?.length > 0 && (
+                        {toArray(cvData.projets?.professional).length > 0 && (
                             <div style={{ marginBottom: '1rem' }}>
                                 <h6>Projets Professionnels</h6>
-                                {cvData.projets.professional.map((proj, index) => (
+                                {toArray(cvData.projets?.professional).map((proj, index) => (
                                     <div key={`prof-${index}`} style={{ marginBottom: '0.75rem' }}>
                                         <p><strong>Titre:</strong> {proj.title || 'N/A'}</p>
-                                        <p><strong>Technologies:</strong> {proj.technologies?.join(', ') || 'N/A'}</p>
-                                        {proj.outcomes?.length > 0 && (
+                                        <p><strong>Technologies:</strong> {toArray(proj.technologies).join(', ') || 'N/A'}</p>
+                                        {toArray(proj.outcomes).length > 0 && (
                                             <>
                                                 <strong>Résultats:</strong>
                                                 <ul>
-                                                    {proj.outcomes.map((outcome, i) => <li key={i}>{outcome}</li>)}
+                                                    {toArray(proj.outcomes).map((outcome, i) => <li key={i}>{outcome}</li>)}
                                                 </ul>
                                             </>
                                         )}
@@ -158,18 +169,18 @@ const CvDataDisplay = ({ cvData }) => (
                                 ))}
                             </div>
                         )}
-                        {cvData.projets.personal?.length > 0 && (
+                        {toArray(cvData.projets?.personal).length > 0 && (
                             <div style={{ marginBottom: '1rem' }}>
                                 <h6>Projets Personnels</h6>
-                                {cvData.projets.personal.map((proj, index) => (
+                                {toArray(cvData.projets?.personal).map((proj, index) => (
                                     <div key={`pers-${index}`} style={{ marginBottom: '0.75rem' }}>
                                         <p><strong>Titre:</strong> {proj.title || 'N/A'}</p>
-                                        <p><strong>Technologies:</strong> {proj.technologies?.join(', ') || 'N/A'}</p>
-                                        {proj.outcomes?.length > 0 && ( 
+                                        <p><strong>Technologies:</strong> {toArray(proj.technologies).join(', ') || 'N/A'}</p>
+                                        {toArray(proj.outcomes).length > 0 && ( 
                                             <>
                                                 <strong>Résultats:</strong>
                                                 <ul>
-                                                    {proj.outcomes.map((outcome, i) => <li key={i}>{outcome}</li>)}
+                                                    {toArray(proj.outcomes).map((outcome, i) => <li key={i}>{outcome}</li>)}
                                                 </ul>
                                             </>
                                         )}
@@ -186,8 +197,8 @@ const CvDataDisplay = ({ cvData }) => (
         <div className="cv-section">
             <div className="cv-section-header">Formations</div>
             <div className="cv-section-body">
-                {cvData.formations?.length > 0 ? (
-                    cvData.formations.map((formation, index) => (
+                {toArray(cvData.formations).length > 0 ? (
+                    toArray(cvData.formations).map((formation, index) => (
                         <div key={index} style={{ marginBottom: '1rem' }}>
                             <p><strong>Diplôme:</strong> {formation.degree}</p>
                             <p><strong>Établissement:</strong> {formation.institution}</p>

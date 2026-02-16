@@ -1,0 +1,124 @@
+/* Enterprise Jobs List Styles - Independent of JobsTab.css */
+
+.enterprise-jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.enterprise-job-card {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #d1d5db;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    box-sizing: border-box;
+}
+
+.enterprise-job-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.enterprise-job-card-header {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.enterprise-company-logo {
+    width: 48px;
+    height: 48px;
+    background-color: #f3f4f6;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #6b7280;
+    flex-shrink: 0;
+}
+
+.enterprise-job-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.enterprise-job-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 0.25rem 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.enterprise-job-company {
+    color: #9ca3af;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.enterprise-job-tags {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.enterprise-job-tag {
+    background-color: #f3f4f6;
+    color: #4b5563;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid #e5e7eb;
+}
+
+.enterprise-job-description {
+    color: #4b5563;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex-grow: 1;
+}
+
+.enterprise-job-actions {
+    margin-top: auto;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.enterprise-job-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.875rem;
+    border: 1px solid #d1d5db;
+    background-color: white;
+    color: #374151;
+}
+
+.enterprise-job-action-btn:hover {
+    background-color: #f3f4f6;
+}

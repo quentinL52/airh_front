@@ -1,0 +1,121 @@
+/* Enterprise Form Styles - Independent of CustomJobModal.css */
+
+.enterprise-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.enterprise-content-header {
+    margin-bottom: 2rem;
+}
+
+.enterprise-section-title {
+    font-size: 1.5rem;
+    /* 24px */
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 0.5rem 0;
+}
+
+.enterprise-section-subtitle {
+    color: #64748b;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.enterprise-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.enterprise-form-body {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.enterprise-form-group {
+    margin-bottom: 20px;
+}
+
+.enterprise-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #475569;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.enterprise-input,
+.enterprise-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #1e293b;
+    transition: all 0.2s;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.enterprise-input:focus,
+.enterprise-textarea:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.enterprise-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.enterprise-btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.enterprise-btn.primary {
+    background-color: #6366f1;
+    color: white;
+}
+
+.enterprise-btn.primary:hover {
+    background-color: #4f46e5;
+}
+
+.enterprise-btn.primary:disabled {
+    background-color: #cbd5e1;
+    cursor: not-allowed;
+}
+
+.enterprise-btn.secondary {
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+}
+
+.enterprise-btn.secondary:hover {
+    background-color: #f1f5f9;
+    color: #334155;
+}
+
+.enterprise-success-message {
+    background-color: #dcfce7;
+    color: #166534;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}

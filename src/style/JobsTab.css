@@ -1,0 +1,634 @@
+/* src/style/JobsTab.css */
+
+.jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* Prevents overflow */
+    gap: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Votre composant Carte.css peut être fusionné ici si vous le souhaitez */
+/* Pour l'instant, on style directement .job-card */
+.job-card {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #d1d5db;
+    /* Darker border (gray-300) for better visibility */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    /* For absolute date positioning */
+    min-height: 200px;
+    /* Ensure uniform height */
+    box-sizing: border-box;
+    /* Ensure padding doesn't overflow width */
+}
+
+.job-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.job-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.25rem;
+    /* Reduced margin */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* 1 line strict */
+}
+
+.job-company {
+    color: #9ca3af;
+    /* Lighter grey */
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.job-spacer {
+    flex-grow: 1;
+    /* Pushes content down/up */
+    min-height: 1rem;
+}
+
+.job-badges {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    /* Space for date area */
+}
+
+.job-badge {
+    background-color: #f3f4f6;
+    color: #4b5563;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    border: 1px solid #e5e7eb;
+}
+
+.job-date {
+    position: absolute;
+    bottom: 1rem;
+    right: 1.5rem;
+    font-size: 0.8rem;
+    color: #9ca3af;
+}
+
+/* Old classes to remove/override safely if still present in DOM before JS update */
+.job-info {
+    display: none;
+}
+
+.job-actions {
+    margin-top: auto;
+    /* Pousse les boutons en bas de la carte */
+    display: flex;
+    gap: 0.75rem;
+}
+
+.job-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.job-btn.view-offer {
+    background-color: #6366f1;
+    color: white;
+}
+
+.job-btn.view-offer:hover {
+    background-color: #4f46e5;
+}
+
+.job-btn.start-interview {
+    background-color: #10b981;
+    color: white;
+}
+
+.job-btn.start-interview:hover {
+    background-color: #059669;
+}
+
+.jobs-loading,
+.jobs-error {
+    text-align: center;
+    padding: 3rem;
+    color: #6b7280;
+}
+
+.search-filter-container {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    margin-top: 2rem;
+}
+
+.job-search-bar {
+    width: 66%;
+    /* Takes up 2/3 roughly */
+    flex-grow: 2;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    /* Margin handled by container */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s;
+    height: 48px;
+    /* Fixed height for alignment */
+    box-sizing: border-box;
+}
+
+.contract-selector-wrapper {
+    width: 33%;
+    /* Takes up 1/3 roughly */
+    flex-grow: 1;
+    position: relative;
+    height: 48px;
+}
+
+.contract-selector {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    background: white;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: #4b5563;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    position: relative;
+    box-sizing: border-box;
+}
+
+.selector-label {
+    flex-grow: 1;
+}
+
+.contract-selector:after {
+    content: '▼';
+    font-size: 0.7rem;
+    color: #9ca3af;
+    margin-left: 0.5rem;
+}
+
+.selector-dropdown {
+    display: none;
+    position: absolute;
+    top: 105%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
+    z-index: 50;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.contract-selector:hover .selector-dropdown,
+.contract-selector-wrapper:hover .selector-dropdown {
+    display: flex;
+}
+
+.contract-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background 0.1s;
+}
+
+.contract-option:hover {
+    background: #f3f4f6;
+}
+
+.contract-option input {
+    accent-color: #6366f1;
+}
+
+.job-search-bar:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.section-subtitle {
+    margin-top: 2rem;
+    color: #4b5563;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Modal and Badge Styles */
+.active-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #f59e0b;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.completed-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #10b981;
+    /* Green */
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.job-btn.view-result {
+    background-color: #3b82f6;
+    /* Blue */
+    color: white;
+}
+
+.job-btn.view-result:hover {
+    background-color: #2563eb;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+}
+
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.modal-content h3 {
+    font-size: 1.5rem;
+    color: #111827;
+    margin-bottom: 1rem;
+}
+
+.modal-content p {
+    color: #4b5563;
+    margin-bottom: 2rem;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.primary-btn,
+.secondary-btn,
+.close-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+
+.primary-btn {
+    background-color: #6366f1;
+    color: white;
+}
+
+.secondary-btn {
+    background-color: #fff;
+    border: 1px solid #d1d5db;
+    color: #374151;
+}
+
+.close-btn {
+    background: transparent;
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin-top: 1rem;
+}
+
+.secondary-btn:hover {
+    background-color: #f3f4f6;
+}
+
+.primary-btn:hover {
+    background-color: #4f46e5;
+}
+
+/* Detailed Modal Styles */
+.detail-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.detail-modal-content {
+    background: white;
+    width: 90%;
+    max-width: 800px;
+    height: 90vh;
+    /* Fixed height */
+    max-height: 90vh;
+    border-radius: 1rem;
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    animation: slideUp 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* Prevent outer scroll */
+    padding: 0;
+}
+
+.detail-close-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    background: white;
+    /* Ensure visibility over content if needed */
+    border: none;
+    font-size: 2rem;
+    color: #9ca3af;
+    cursor: pointer;
+    transition: color 0.2s;
+    line-height: 1;
+    z-index: 20;
+    /* Above scroll content */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.detail-scroll-container {
+    padding: 3rem;
+    overflow-y: auto;
+    flex: 1;
+    /* Allow it to grow and shrink properly in the flex container */
+    min-height: 0;
+    /* Crucial for nested flex scrolling */
+    /* Hide scrollbar */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
+}
+
+.detail-scroll-container::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari/Opera */
+}
+
+.detail-close-btn:hover {
+    color: #4b5563;
+    background: #f9fafb;
+}
+
+.detail-header {
+    margin-bottom: 2.5rem;
+    text-align: left;
+    margin-top: 1rem;
+    padding-left: 1rem;
+    /* Add space for the close button visual balance */
+}
+
+/* .detail-title-row removed as button is moved below */
+
+.detail-header h2 {
+    font-size: 2rem;
+    color: #111827;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.detail-subtitle {
+    font-size: 1.1rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.detail-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.detail-section h3 {
+    font-size: 1.25rem;
+    color: #4f46e5;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    border-bottom: 2px solid #e0e7ff;
+    padding-bottom: 0.25rem;
+    display: inline-block;
+}
+
+.detail-section p {
+    color: #374151;
+    line-height: 1.8;
+    /* Increased line height for airiness */
+    font-size: 1.05rem;
+    white-space: pre-line;
+    text-align: left;
+    /* Left align the paragraph text */
+}
+
+/* Also ensure the section container aligns its children to start */
+.detail-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-bottom: 2rem;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Detail Header Actions */
+.detail-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.job-btn.optimize-cv-btn {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    border: none;
+    padding: 0.65rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.25);
+}
+
+.job-btn.optimize-cv-btn:hover {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px -2px rgba(99, 102, 241, 0.35);
+}
+
+.job-btn.active {
+    background-color: #f59e0b;
+}
+
+.job-btn.active:hover {
+    background-color: #d97706;
+}
+/* Skeleton Loader Styles */
+@keyframes shimmer {
+    0% {
+        background-position: -468px 0;
+    }
+
+    100% {
+        background-position: 468px 0;
+    }
+}
+
+.skeleton-card {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.skeleton-shimmer {
+    animation-duration: 1.2s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: shimmer;
+    animation-timing-function: linear;
+    background: #f6f7f8;
+    background: linear-gradient(to right, #f6f7f8 8%, #edeef1 18%, #f6f7f8 33%);
+    background-size: 800px 104px;
+    position: relative;
+    border-radius: 4px;
+}
+
+.skeleton-title {
+    height: 24px;
+    width: 70%;
+    margin-bottom: 12px;
+}
+
+.skeleton-company {
+    height: 16px;
+    width: 40%;
+    margin-bottom: 24px;
+}
+
+.skeleton-badges {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 24px;
+}
+
+.skeleton-badge {
+    height: 24px;
+    width: 60px;
+    border-radius: 12px;
+}
+
+.skeleton-actions {
+    margin-top: auto;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.skeleton-btn {
+    height: 36px;
+    width: 100px;
+    border-radius: 8px;
+}

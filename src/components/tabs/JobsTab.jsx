@@ -3,6 +3,7 @@ import { jobsService } from '../../services/jobService';
 import JobCard from './JobCard';
 import Fuse from 'fuse.js';
 import '../../style/JobsTab.css';
+import Pagination from '../ui/Pagination';
 import JobDetailsModal from './JobDetailsModal';
 import CVOptimizationModal from './CVOptimizationModal';
 
@@ -39,6 +40,10 @@ const JobsTab = () => {
     const [selectedContracts, setSelectedContracts] = useState([]);
     const [availableContracts, setAvailableContracts] = useState([]);
 
+    // Client-side Pagination State
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 20;
+
     // Modal State
     const [showModal, setShowModal] = useState(false);
     const [selectedJob, setSelectedJob] = useState(null);
@@ -60,6 +65,12 @@ const JobsTab = () => {
     const { getToken } = useAuth();
     const navigate = useNavigate();
 
+    const normalizeContract = (contract) => {
+        if (!contract) return '';
+        const trimmed = contract.toString().trim();
+        return trimmed.charAt(0).toUpperCase() + trimmed.slice(1).toLowerCase();
+    };
+
     const fuseOptions = {
         keys: [
             { name: 'poste', weight: 0.7 },
@@ -71,36 +82,34 @@ const JobsTab = () => {
         minMatchCharLength: 2,
     };
 
-    let fuse;
-
-    const normalizeContract = (contract) => {
-        if (!contract) return '';
-        const trimmed = contract.toString().trim();
-        return trimmed.charAt(0).toUpperCase() + trimmed.slice(1).toLowerCase();
-    };
-
+    // 0. Load ALL data once
     useEffect(() => {
         const loadData = async () => {
+            setIsLoading(true);
             try {
                 const token = await getToken();
 
-                // Fetch jobs, active interviews, AND feedbacks
-                const [jobsData, activeData, feedbacksData] = await Promise.all([
-                    jobsService.getJobs(),
+                // Fetch ALL jobs, active interviews, AND feedbacks
+                const [jobsResponse, activeData, feedbacksData] = await Promise.all([
+                    jobsService.getJobs(1, 1000), // Fetch 1000 items for client-side filtering
                     jobsService.getActiveInterviews(token),
                     feedbackService.getMyFeedbacks(token)
                 ]);
 
+                // Handle response - assuming backend returns { items: [...], total: ... }
+                const jobsData = jobsResponse.items || [];
+
                 setJobs(jobsData);
+                // Initial filter set to all
                 setFilteredJobs(jobsData);
+
                 setActiveInterviews(activeData);
                 setFeedbacks(feedbacksData);
 
-                // Extract unique contracts with normalization
+                // Extract unique contracts from ALL loaded jobs
                 const contracts = [...new Set(jobsData.map(job => normalizeContract(job.contrat)))].filter(Boolean).sort();
                 setAvailableContracts(contracts);
 
-                fuse = new Fuse(jobsData, fuseOptions);
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -111,25 +120,41 @@ const JobsTab = () => {
         loadData();
     }, []);
 
+    // 1. Client-Side Filtering (Search + Contracts)
     useEffect(() => {
         let results = jobs;
 
-        // 1. Filter by Search Term
+        // Filter by Search Term (Fuse.js)
         if (searchTerm.trim() !== '') {
-            const tempFuse = new Fuse(jobs, fuseOptions);
-            const searchResults = tempFuse.search(searchTerm);
+            const fuse = new Fuse(jobs, fuseOptions);
+            const searchResults = fuse.search(searchTerm);
             results = searchResults.map(result => result.item);
         }
 
-        // 2. Filter by Contract
+        // Filter by Contract
         if (selectedContracts.length > 0) {
             results = results.filter(job => selectedContracts.includes(normalizeContract(job.contrat)));
         }
 
         setFilteredJobs(results);
+        // Reset to page 1 on filter change
+        setCurrentPage(1);
 
     }, [searchTerm, selectedContracts, jobs]);
 
+    // 2. Pagination Calculation
+    const totalItems = filteredJobs.length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const currentJobs = filteredJobs.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.querySelector('.main-content')?.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
@@ -225,34 +250,45 @@ const JobsTab = () => {
             return <div className="jobs-error">Aucune offre d'emploi disponible pour le moment.</div>;
         }
         return (
-            <div className="jobs-grid">
-                {filteredJobs.map(job => {
-                    // Robust ID matching: Convert both to string
-                    const feedback = feedbacks.find(fb => String(fb.job_offer_id) === String(job.id));
+            <>
+                <div className="jobs-grid">
+                    {currentJobs.map(job => {
+                        // Robust ID matching: Convert both to string
+                        const feedback = feedbacks.find(fb => String(fb.job_offer_id) === String(job.id));
 
-                    return (
-                        <JobCard
-                            key={job.id}
-                            job={job}
-                            feedback={feedback}
-                            isActive={activeInterviews.includes(job.id)}
-                            onStart={handleJobClick}
-                            onViewFeedback={async () => {
-                                try {
-                                    if (feedback) {
-                                        const token = await getToken();
-                                        const detail = await feedbackService.getFeedbackById(feedback.id, token);
-                                        setSelectedFeedback(detail);
-                                        setShowFeedbackModal(true);
+                        return (
+                            <JobCard
+                                key={job.id}
+                                job={job}
+                                feedback={feedback}
+                                isActive={activeInterviews.includes(job.id)}
+                                onStart={handleJobClick}
+                                onViewFeedback={async () => {
+                                    try {
+                                        if (feedback) {
+                                            const token = await getToken();
+                                            const detail = await feedbackService.getFeedbackById(feedback.id, token);
+                                            setSelectedFeedback(detail);
+                                            setShowFeedbackModal(true);
+                                        }
+                                    } catch (e) {
+                                        console.error("Error fetching feedback detail", e);
                                     }
-                                } catch (e) {
-                                    console.error("Error fetching feedback detail", e);
-                                }
-                            }}
-                        />
-                    );
-                })}
-            </div>
+                                }}
+                            />
+                        );
+                    })}
+                </div>
+
+                {/* Pagination Controls */}
+                {!isLoading && filteredJobs.length > 0 && (
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={handlePageChange}
+                    />
+                )}
+            </>
         );
     };
 

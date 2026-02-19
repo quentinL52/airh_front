@@ -60,6 +60,27 @@ const JobDetailsModal = ({ job, onClose, isActive, onStartInterview, onOptimizeC
                     <div className="detail-body">
                         {sections.map(section => {
                             const content = job[section.key];
+                            // Check if we have content OR if it's a field that might be missing in lite version
+                            // If it's missing and we don't have it, show skeleton
+                            // Note: 'mission', 'profil_recherche', 'description_nettoyee' are missing in lite
+                            // 'competences' IS in lite, so it should show immediately if present
+
+                            const isHeavyField = ['description_nettoyee', 'mission', 'profil_recherche'].includes(section.key);
+                            const isLoadingField = isHeavyField && !content;
+
+                            if (isLoadingField) {
+                                return (
+                                    <div key={section.key} className="detail-section">
+                                        <h3>{section.title}</h3>
+                                        <div className="description-skeleton">
+                                            <div className="skeleton-line full"></div>
+                                            <div className="skeleton-line full"></div>
+                                            <div className="skeleton-line three-quarter"></div>
+                                        </div>
+                                    </div>
+                                );
+                            }
+
                             if (!content) return null;
 
                             return (

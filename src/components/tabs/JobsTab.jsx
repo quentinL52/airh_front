@@ -75,7 +75,7 @@ const JobsTab = () => {
         keys: [
             { name: 'poste', weight: 0.7 },
             { name: 'entreprise', weight: 0.5 },
-            { name: 'description_poste', weight: 0.3 },
+            { name: 'description_nettoyee', weight: 0.3 }, // Changed from description_poste
             { name: 'competences', weight: 0.4 }
         ],
         threshold: 0.3,
@@ -89,9 +89,9 @@ const JobsTab = () => {
             try {
                 const token = await getToken();
 
-                // Fetch ALL jobs, active interviews, AND feedbacks
+                // Fetch ALL jobs (lite version), active interviews, AND feedbacks
                 const [jobsResponse, activeData, feedbacksData] = await Promise.all([
-                    jobsService.getJobs(1, 1000), // Fetch 1000 items for client-side filtering
+                    jobsService.getJobs(1, 1000, true), // Explicitly request lite version
                     jobsService.getActiveInterviews(token),
                     feedbackService.getMyFeedbacks(token)
                 ]);
@@ -170,10 +170,33 @@ const JobsTab = () => {
         });
     };
 
-    const handleJobClick = (job, action = 'interview') => {
+    const fetchFullJobDetails = async (job) => {
+        // If job already has 'mission', we assume it's full details
+        if (job.mission) {
+            return job;
+        }
+        try {
+            // Fetch validation and merging
+            const fullJob = await jobsService.getJob(job.id);
+            // Merge with existing job to keep any local state/props if needed, though usually full replace is fine
+            return { ...job, ...fullJob };
+        } catch (error) {
+            console.error("Error fetching full job details:", error);
+            return job; // Return partial as fallback
+        }
+    };
+
+    const handleJobClick = async (job, action = 'interview') => {
         if (action === 'view') {
-            setDetailJob(job);
+            setDetailJob(job); // Open immediately with lite data (Optimistic UI)
             setShowDetailModal(true);
+
+            // Fetch full details in background
+            const fullJob = await fetchFullJobDetails(job);
+            setDetailJob(fullJob); // Update modal with full data
+
+            // Also update the job in the main list so we don't fetch again
+            setJobs(prevJobs => prevJobs.map(j => j.id === fullJob.id ? fullJob : j));
             return;
         }
 

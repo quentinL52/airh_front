@@ -1,8 +1,8 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const jobsService = {
-    getJobs: async (page = 1, size = 20) => {
-        const response = await fetch(`${API_BASE_URL}/jobs/?page=${page}&size=${size}`);
+    getJobs: async (page = 1, size = 20, lite = true) => {
+        const response = await fetch(`${API_BASE_URL}/jobs/?page=${page}&size=${size}&lite=${lite}`);
 
         if (!response.ok) {
             throw new Error("Erreur lors de la récupération des offres d'emploi.");

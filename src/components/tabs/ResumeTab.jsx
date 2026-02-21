@@ -141,14 +141,26 @@ const ResumeTab = ({ user, cvData, isLoading, onRefresh }) => {
     // fetchCvData supprimé car géré par le parent (HomePage)
 
     const handleFileSelect = (file) => {
-        if (file && file.type === 'application/pdf') {
-            setSelectedFile(file);
-            setStatusMessage({ text: `Fichier prêt : ${file.name}`, type: 'success' });
-        } else {
+        if (!file) {
             setSelectedFile(null);
+            setStatusMessage({ text: '', type: '' });
+            return;
+        }
+
+        setSelectedFile(file); // On garde toujours la trace du fichier sélectionné
+
+        if (file.type !== 'application/pdf') {
             setStatusMessage({ text: 'Erreur : Veuillez sélectionner un fichier PDF.', type: 'error' });
+        } else if (file.size > 800 * 1024) {
+            setStatusMessage({ text: 'Erreur : Le fichier dépasse la taille maximale (800 Ko).', type: 'error' });
+        } else {
+            setStatusMessage({ text: `Fichier prêt : ${file.name}`, type: 'success' });
         }
     };
+
+    const isFileTooLarge = selectedFile && selectedFile.size > 800 * 1024;
+    const isInvalidType = selectedFile && selectedFile.type !== 'application/pdf';
+    const canUpload = selectedFile && !isFileTooLarge && !isInvalidType;
 
     const handleUpload = async () => {
         if (!selectedFile) return;
@@ -216,7 +228,7 @@ const ResumeTab = ({ user, cvData, isLoading, onRefresh }) => {
                     >
                         <div className="upload-icon"><i className="fas fa-cloud-upload-alt"></i></div>
                         <p className="upload-text">Glissez-déposez ou cliquez ici</p>
-                        <p className="upload-hint">Format PDF uniquement</p>
+                        <p className="upload-hint">Format PDF uniquement (Max 800 Ko)</p>
                         <input
                             type="file"
                             accept=".pdf"
@@ -233,7 +245,7 @@ const ResumeTab = ({ user, cvData, isLoading, onRefresh }) => {
                 <div className="upload-actions">
                     <button
                         onClick={handleUpload}
-                        disabled={!selectedFile || isUploading}
+                        disabled={!canUpload || isUploading}
                         className="btn-primary"
                     >
                         {isUploading ? 'Analyse...' : 'Analyser'}

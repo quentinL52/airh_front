@@ -50,8 +50,8 @@ const AuthPopup = ({ isOpen, onClose, isEnterprise = false }) => {
                 elements: {
                   socialButtonsBlockButton: "hidden",
                   dividerRow: "hidden",
-                  footerActionLink: "hidden",
-                  cardFooter: "hidden"
+                  footerAction: "hidden", // Hide "Don't have an account? Sign up"
+                  footer: "hidden"       // Hide entire footer including Clerk branding/links if desired
                 },
               }
               : undefined

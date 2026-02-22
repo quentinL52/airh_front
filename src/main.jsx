@@ -30,7 +30,7 @@ function AppContent() {
         <Route
           path="/home"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute requiredRole="candidate">
               <HomePage />
             </ProtectedRoute>
           }
@@ -38,7 +38,7 @@ function AppContent() {
         <Route
           path="/account"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute requiredRole="candidate">
               <AccountPage />
             </ProtectedRoute>
           }
@@ -46,7 +46,7 @@ function AppContent() {
         <Route
           path="/enterprise/dashboard"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute requiredRole="enterprise">
               <EnterpriseDashboardPage />
             </ProtectedRoute>
           }
@@ -58,7 +58,11 @@ function AppContent() {
 
 function App() {
   return (
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+    <ClerkProvider
+      publishableKey={PUBLISHABLE_KEY}
+      afterSignOutUrl="/"
+      domain="airh.online"
+    >
       <AppContent />
     </ClerkProvider>
   );

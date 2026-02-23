@@ -1,13 +1,15 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const contactService = {
-  sendContactEmail: async (formData) => {
+  sendContactEmail: async (formData, token) => {
     const response = await fetch(`${API_BASE_URL}/contact`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(formData),
+      credentials: 'include',
     });
 
     if (!response.ok) {

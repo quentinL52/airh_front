@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '@clerk/clerk-react';
 import { contactService } from '../../services/contactService';
 import '../../style/ContactPopup.css';
 
@@ -10,6 +11,7 @@ const ContactPopup = ({ isOpen, onClose, user, initialValues = {}, hideSubject =
     message: '',
   });
   const [status, setStatus] = useState({ sending: false, success: false, error: null });
+  const { getToken } = useAuth();
 
   useEffect(() => {
     setFormData(prev => ({
@@ -41,7 +43,8 @@ const ContactPopup = ({ isOpen, onClose, user, initialValues = {}, hideSubject =
     e.preventDefault();
     setStatus({ sending: true, success: false, error: null });
     try {
-      await contactService.sendContactEmail(formData);
+      const token = await getToken();
+      await contactService.sendContactEmail(formData, token);
       setStatus({ sending: false, success: true, error: null });
       setTimeout(() => {
         onClose();

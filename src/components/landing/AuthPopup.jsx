@@ -42,8 +42,8 @@ const AuthPopup = ({ isOpen, onClose, isEnterprise = false }) => {
       <div className="auth-popup-container" style={{ padding: 0, overflow: 'hidden', maxWidth: 'fit-content' }}>
         {/* Clerk's SignIn component handles everything */}
         <SignIn
-          signUpUrl="/sign-up" // Optional: custom logic if needed, but default works for many
-          forceRedirectUrl={isEnterprise ? "/enterprise/dashboard" : "/home"} // Redirect based on user type
+          signUpUrl="/sign-up"
+          forceRedirectUrl={isEnterprise ? "/enterprise/dashboard" : "/home"} // paramétre pour n'afficher que la connection par login pour entreprise
           appearance={
             isEnterprise
               ? {
@@ -52,13 +52,11 @@ const AuthPopup = ({ isOpen, onClose, isEnterprise = false }) => {
                   socialButtonsIconButton: { display: "none" },
                   socialButtonsProviderButton: { display: "none" },
                   socialButtonsProviderIcon: { display: "none" },
-                  // Masque les conteneurs/sections sociales pour éviter les espaces vides
                   socialButtonsBlockButtons: { display: "none" },
                   socialButtonsIconButtons: { display: "none" },
-                  dividerRow: { display: "none" }, // Masque le séparateur "ou"
-                  // Optionnel : masques footer pour un look plus clean
+                  dividerRow: { display: "none" },
                   footerAction: { display: "none" },
-                  footer: { display: "none" },     // Hide entire footer including Clerk branding/links if desired
+                  footer: { display: "none" },
                 },
               }
               : undefined

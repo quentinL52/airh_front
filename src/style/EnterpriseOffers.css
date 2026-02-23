@@ -1,0 +1,542 @@
+/* ==========================================
+   Enterprise Offers & Interview Detail Styles
+   ========================================== */
+
+/* --- Container --- */
+.enterprise-offers-container,
+.enterprise-detail-container {
+    padding: 0;
+}
+
+.enterprise-content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.enterprise-section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+.enterprise-section-subtitle {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin: 0.25rem 0 0 0;
+}
+
+/* --- Loading / Error / Empty --- */
+.enterprise-offers-loading,
+.enterprise-offers-error,
+.enterprise-offers-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    text-align: center;
+    color: #64748b;
+    gap: 0.75rem;
+}
+
+.enterprise-offers-loading i,
+.enterprise-offers-error i,
+.enterprise-offers-empty i {
+    font-size: 2rem;
+    opacity: 0.5;
+}
+
+.enterprise-offers-error {
+    color: #ef4444;
+}
+
+.enterprise-offers-empty-hint {
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
+
+.enterprise-btn-retry {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1.25rem;
+    border: 1px solid #6366f1;
+    background: transparent;
+    color: #6366f1;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.enterprise-btn-retry:hover {
+    background: #6366f1;
+    color: white;
+}
+
+/* --- Offer Rows (full-width rectangles) --- */
+.enterprise-offers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.enterprise-offer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.enterprise-offer-row:hover {
+    border-color: #6366f1;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
+    transform: translateY(-1px);
+}
+
+.enterprise-offer-row-main {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.enterprise-offer-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 0.5rem;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.enterprise-offer-info {
+    min-width: 0;
+}
+
+.enterprise-offer-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.enterprise-offer-company {
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+.enterprise-offer-row-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-shrink: 0;
+}
+
+.enterprise-offer-date,
+.enterprise-offer-interviews {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.enterprise-offer-interviews {
+    font-weight: 600;
+    color: #6366f1;
+}
+
+.enterprise-offer-arrow {
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+}
+
+.enterprise-offer-row:hover .enterprise-offer-arrow {
+    color: #6366f1;
+}
+
+/* --- Back Button --- */
+.enterprise-back-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
+    background: white;
+    color: #64748b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.enterprise-back-btn:hover {
+    border-color: #6366f1;
+    color: #6366f1;
+}
+
+/* --- Sort Button --- */
+.enterprise-sort-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #e2e8f0;
+    background: white;
+    color: #64748b;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.2s;
+}
+
+.enterprise-sort-btn:hover {
+    border-color: #6366f1;
+    color: #6366f1;
+}
+
+/* --- Interview Rows --- */
+.enterprise-interview-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.enterprise-interview-row:hover {
+    border-color: #6366f1;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
+    transform: translateY(-1px);
+}
+
+.enterprise-interview-row-main {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.enterprise-interview-score-badge {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.enterprise-interview-info {
+    min-width: 0;
+}
+
+.enterprise-interview-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+}
+
+.enterprise-interview-date {
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+.enterprise-interview-row-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-shrink: 0;
+}
+
+.enterprise-interview-score-label {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* ============================
+   Interview Detail Page Styles
+   ============================ */
+
+.enterprise-detail-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.enterprise-detail-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.enterprise-detail-card h3 i {
+    color: #6366f1;
+}
+
+.enterprise-detail-card p {
+    color: #475569;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.enterprise-detail-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f1f5f9;
+}
+
+.enterprise-detail-section h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #334155;
+    margin: 0 0 0.5rem 0;
+}
+
+/* --- Scores Grid --- */
+.enterprise-scores-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    text-align: center;
+}
+
+.enterprise-score-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.enterprise-score-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 3px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.enterprise-score-circle span {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.enterprise-score-label {
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* --- Metrics --- */
+.enterprise-metrics-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.enterprise-metric-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.enterprise-metric-label {
+    width: 120px;
+    font-size: 0.85rem;
+    color: #475569;
+    text-transform: capitalize;
+    flex-shrink: 0;
+}
+
+.enterprise-metric-bar-container {
+    flex: 1;
+    height: 8px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.enterprise-metric-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.enterprise-metric-value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1e293b;
+    width: 40px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+/* --- Decision Badge --- */
+.enterprise-decision-badge {
+    display: inline-block;
+    padding: 0.35rem 1rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.enterprise-decision-badge[data-recommendation="recruter"] {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.enterprise-decision-badge[data-recommendation="approfondir"] {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.enterprise-decision-badge[data-recommendation="rejeter"] {
+    background: #fecaca;
+    color: #991b1b;
+}
+
+/* --- Fraud --- */
+.enterprise-red-flag {
+    margin-left: 0.5rem;
+    font-size: 0.8rem;
+    color: #ef4444;
+}
+
+.enterprise-fraud-scores {
+    margin-top: 0.75rem;
+    color: #475569;
+    font-size: 0.9rem;
+}
+
+.enterprise-fraud-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.enterprise-fraud-item {
+    padding: 0.25rem 0.75rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+    color: #475569;
+    text-transform: capitalize;
+}
+
+/* --- Conversation --- */
+.enterprise-conversation {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.enterprise-message {
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    max-width: 85%;
+}
+
+.enterprise-message.user {
+    background: #ede9fe;
+    align-self: flex-end;
+    border-bottom-right-radius: 0.25rem;
+}
+
+.enterprise-message.assistant {
+    background: #f1f5f9;
+    align-self: flex-start;
+    border-bottom-left-radius: 0.25rem;
+}
+
+.enterprise-message-role {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #6366f1;
+    margin-bottom: 0.25rem;
+}
+
+.enterprise-message.assistant .enterprise-message-role {
+    color: #64748b;
+}
+
+.enterprise-message-content {
+    font-size: 0.875rem;
+    color: #1e293b;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .enterprise-offer-row,
+    .enterprise-interview-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .enterprise-offer-row-meta,
+    .enterprise-interview-row-meta {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .enterprise-scores-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .enterprise-content-header {
+        flex-direction: column;
+    }
+}

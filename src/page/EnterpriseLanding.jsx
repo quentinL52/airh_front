@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
+import { useAuth, useUser } from '@clerk/clerk-react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/landing/Navbar';
+import AuthPopup from '../components/landing/AuthPopup';
 import Footer from '../components/landing/Footer';
 import '../style/EnterpriseLanding.css';
-import { SignIn } from "@clerk/clerk-react";
 
 
-<SignIn
-    appearance={{
-        elements: {
-            socialButtonsBlockButton: "hidden", // Cache Google, GitHub, LinkedIn
-            dividerRow: "hidden",               // Cache le séparateur "ou"
-        }
-    }}
-/>
 const EnterpriseLanding = () => {
+    const { isSignedIn } = useAuth();
+    const { user } = useUser();
+    const navigate = useNavigate();
+    const [showAuthPopup, setShowAuthPopup] = useState(false);
     const [formData, setFormData] = useState({
         company_name: '',
         contact_name: '',
@@ -24,6 +22,13 @@ const EnterpriseLanding = () => {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState(null);
+
+    // Auto-redirect if already signed in as enterprise user
+    React.useEffect(() => {
+        if (isSignedIn && user?.publicMetadata?.profil === 'entreprise') {
+            navigate('/enterprise/dashboard');
+        }
+    }, [isSignedIn, user, navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -177,19 +182,25 @@ const EnterpriseLanding = () => {
                         </div>
                         <div className="feature-card">
                             <i className="fas fa-robot"></i>
-                            <h3>Validation par l'IA</h3>
+                            <h3>Analyses intelligentes</h3>
                             <p>Vérifiez la pertinence des candidats par rapport à vos fiches de poste grâce à notre moteur d'analyse.</p>
                         </div>
                         <div className="feature-card">
                             <i className="fas fa-comments"></i>
                             <h3>Simulateur d'Entretien</h3>
-                            <p>Préparez vos recruteurs ou testez vos candidats avec des scénarios d'entretien ultra-réalistes.</p>
+                            <p>Préparez vos recruteurs ou testez vos candidats avec des scénarios d'entretien.</p>
                         </div>
                     </div>
                 </div>
             </section>
 
             <Footer />
+
+            <AuthPopup
+                isOpen={showAuthPopup}
+                onClose={() => setShowAuthPopup(false)}
+                isEnterprise={true}
+            />
         </div>
     );
 };

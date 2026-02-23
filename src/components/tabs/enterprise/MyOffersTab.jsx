@@ -1,69 +1,148 @@
-import React from 'react';
-import '../../../style/EnterpriseJobs.css'; // Independent styles
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '@clerk/clerk-react';
+import { useNavigate } from 'react-router-dom';
+import '../../../style/EnterpriseOffers.css';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const MyOffersTab = () => {
-    // Mock data for enterprise offers
-    const myOffers = [
-        {
-            id: 1,
-            poste: 'Développeur Full Stack',
-            entreprise: 'Ma Super Entreprise', // Implicitly the current user's company
-            contrat: 'CDI',
-            location: 'Paris, France',
-            salaire: '50k - 65k',
-            description_poste: 'Nous recherchons un développeur Full Stack expérimenté pour rejoindre notre équipe.',
-            competences: ['React', 'Node.js', 'PostgreSQL'],
-            date_publication: '2023-10-27'
-        },
-        {
-            id: 2,
-            poste: 'Product Owner',
-            entreprise: 'Ma Super Entreprise',
-            contrat: 'Freelance',
-            location: 'Remote',
-            salaire: '400€ - 600€ / jour',
-            description_poste: 'Product Owner pour gérer le backlog et les sprints de notre produit phare.',
-            competences: ['Agile', 'Scrum', 'JIRA'],
-            date_publication: '2023-11-05'
+    const { getToken } = useAuth();
+    const navigate = useNavigate();
+    const [offers, setOffers] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const fetchOffers = async () => {
+        try {
+            setIsLoading(true);
+            const token = await getToken();
+            const response = await fetch(`${API_BASE_URL}/enterprise/offers`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setOffers(data);
+            } else {
+                const errorData = await response.json();
+                setError(errorData.detail || 'Erreur lors du chargement des offres.');
+            }
+        } catch (err) {
+            console.error('Error fetching offers:', err);
+            setError('Erreur réseau. Veuillez réessayer.');
+        } finally {
+            setIsLoading(false);
         }
-    ];
+    };
+
+    useEffect(() => {
+        fetchOffers();
+    }, []);
+
+    const formatDate = (dateStr) => {
+        if (!dateStr) return '';
+        try {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('fr-FR', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric'
+            });
+        } catch {
+            return dateStr;
+        }
+    };
+
+    const handleOfferClick = (offerId) => {
+        navigate(`/enterprise/offers/${offerId}`);
+    };
+
+    if (isLoading) {
+        return (
+            <div className="enterprise-offers-container">
+                <div className="enterprise-content-header">
+                    <h2 className="enterprise-section-title">Mes offres</h2>
+                </div>
+                <div className="enterprise-offers-loading">
+                    <i className="fas fa-spinner fa-spin"></i>
+                    <span>Chargement des offres...</span>
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="enterprise-offers-container">
+                <div className="enterprise-content-header">
+                    <h2 className="enterprise-section-title">Mes offres</h2>
+                </div>
+                <div className="enterprise-offers-error">
+                    <i className="fas fa-exclamation-triangle"></i>
+                    <span>{error}</span>
+                    <button onClick={fetchOffers} className="enterprise-btn-retry">
+                        Réessayer
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="enterprise-jobs-container">
+        <div className="enterprise-offers-container">
             <div className="enterprise-content-header">
-                <p className="enterprise-section-subtitle">Gérez vos offres d'emploi publiées.</p>
+                <h2 className="enterprise-section-title">Mes offres</h2>
+                <p className="enterprise-section-subtitle">
+                    {offers.length > 0
+                        ? `${offers.length} offre${offers.length > 1 ? 's' : ''} publiée${offers.length > 1 ? 's' : ''}`
+                        : 'Aucune offre publiée pour le moment.'}
+                </p>
             </div>
 
-            <div className="enterprise-jobs-grid">
-                {myOffers.map(offer => (
-                    <div key={offer.id} className="enterprise-job-card">
-                        <div className="enterprise-job-card-header">
-                            <div className="enterprise-company-logo">
-                                {offer.entreprise.charAt(0)}
+            {offers.length === 0 ? (
+                <div className="enterprise-offers-empty">
+                    <i className="fas fa-briefcase"></i>
+                    <p>Vous n'avez pas encore publié d'offres.</p>
+                    <p className="enterprise-offers-empty-hint">
+                        Ajoutez votre première offre depuis l'onglet "Ajouter une offre".
+                    </p>
+                </div>
+            ) : (
+                <div className="enterprise-offers-list">
+                    {offers.map(offer => (
+                        <div
+                            key={offer.id}
+                            className="enterprise-offer-row"
+                            onClick={() => handleOfferClick(offer.id)}
+                        >
+                            <div className="enterprise-offer-row-main">
+                                <div className="enterprise-offer-icon">
+                                    <i className="fas fa-briefcase"></i>
+                                </div>
+                                <div className="enterprise-offer-info">
+                                    <h3 className="enterprise-offer-title">{offer.poste}</h3>
+                                    <span className="enterprise-offer-company">{offer.entreprise}</span>
+                                </div>
                             </div>
-                            <div className="enterprise-job-info">
-                                <h3 className="enterprise-job-title">{offer.poste}</h3>
-                                <p className="enterprise-job-company">{offer.entreprise}</p>
+                            <div className="enterprise-offer-row-meta">
+                                <div className="enterprise-offer-date">
+                                    <i className="fas fa-calendar-alt"></i>
+                                    <span>{formatDate(offer.created_at)}</span>
+                                </div>
+                                <div className="enterprise-offer-interviews">
+                                    <i className="fas fa-users"></i>
+                                    <span>{offer.interview_count} entretien{offer.interview_count !== 1 ? 's' : ''}</span>
+                                </div>
+                                <div className="enterprise-offer-arrow">
+                                    <i className="fas fa-chevron-right"></i>
+                                </div>
                             </div>
                         </div>
-                        <div className="enterprise-job-tags">
-                            <span className="enterprise-job-tag contract">{offer.contrat}</span>
-                            <span className="enterprise-job-tag location">{offer.location}</span>
-                        </div>
-                        <div className="enterprise-job-description">
-                            {offer.description_poste}
-                        </div>
-                        <div className="enterprise-job-actions">
-                            <button className="enterprise-job-action-btn secondary" style={{ flex: 1 }}>
-                                Modifier
-                            </button>
-                            <button className="enterprise-job-action-btn secondary" style={{ flex: 1, borderColor: '#ef4444', color: '#ef4444' }}>
-                                Supprimer
-                            </button>
-                        </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };

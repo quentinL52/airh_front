@@ -5,12 +5,9 @@ import Fuse from 'fuse.js';
 import '../../style/JobsTab.css';
 import Pagination from '../ui/Pagination';
 import JobDetailsModal from './JobDetailsModal';
-import CVOptimizationModal from './CVOptimizationModal';
-
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@clerk/clerk-react';
 import { interviewService } from '../../services/interviewService';
-import { cvOptimizationService } from '../../services/cvOptimizationService';
 import { feedbackService } from '../../services/feedbackService';
 import FeedbackDetailModal from './FeedbackDetailModal';
 
@@ -55,12 +52,6 @@ const JobsTab = () => {
     // Feedback Modal State
     const [showFeedbackModal, setShowFeedbackModal] = useState(false);
     const [selectedFeedback, setSelectedFeedback] = useState(null);
-
-    // CV Optimization Modal State
-    const [showOptimizationModal, setShowOptimizationModal] = useState(false);
-    const [optimizationResult, setOptimizationResult] = useState(null);
-    const [optimizationJob, setOptimizationJob] = useState(null);
-    const [isOptimizing, setIsOptimizing] = useState(false);
 
     const { getToken } = useAuth();
     const navigate = useNavigate();
@@ -229,32 +220,6 @@ const JobsTab = () => {
         }
     };
 
-    const handleOptimizeCV = async (job) => {
-        setOptimizationJob(job);
-        setShowDetailModal(false);
-        setShowOptimizationModal(true);
-        setIsOptimizing(true);
-        setOptimizationResult(null);
-
-        try {
-            const token = await getToken();
-            const result = await cvOptimizationService.analyzeMatch(job.id, token);
-            setOptimizationResult(result);
-        } catch (e) {
-            console.error("Erreur lors de l'optimisation:", e);
-            alert(e.message || "Erreur lors de l'analyse. Assurez-vous d'avoir téléchargé votre CV.");
-            setShowOptimizationModal(false);
-        } finally {
-            setIsOptimizing(false);
-        }
-    };
-
-    const handleCloseOptimization = () => {
-        setShowOptimizationModal(false);
-        setOptimizationResult(null);
-        setOptimizationJob(null);
-    };
-
     const renderContent = () => {
         if (isLoading) {
             return (
@@ -372,7 +337,6 @@ const JobsTab = () => {
                     feedback={detailJob && feedbacks.find(fb => String(fb.job_offer_id) === String(detailJob.id))}
                     isActive={detailJob && activeInterviews.includes(detailJob.id)}
                     onStartInterview={() => handleJobClick(detailJob, 'interview')}
-                    onOptimizeCV={handleOptimizeCV}
                     onViewFeedback={async (feedbackId) => {
                         try {
                             setShowDetailModal(false);
@@ -399,15 +363,6 @@ const JobsTab = () => {
                 />
             )}
 
-            {/* CV Optimization Modal */}
-            {showOptimizationModal && (
-                <CVOptimizationModal
-                    result={optimizationResult}
-                    job={optimizationJob}
-                    isLoading={isOptimizing}
-                    onClose={handleCloseOptimization}
-                />
-            )}
         </div>
     );
 };

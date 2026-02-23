@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import '../../../style/EnterpriseForm.css'; // Independent styles
+import { useAuth } from '@clerk/clerk-react';
+import '../../../style/EnterpriseForm.css';
 
-const AddOfferTab = () => {
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+const AddOfferTab = ({ onOfferCreated }) => {
+    const { getToken } = useAuth();
     const [formData, setFormData] = useState({
-        entreprise: '',
         poste: '',
         mission: '',
         profil_recherche: '',
@@ -11,6 +14,7 @@ const AddOfferTab = () => {
     });
     const [isLoading, setIsLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -20,23 +24,44 @@ const AddOfferTab = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        // Simulate API call
-        setTimeout(() => {
-            console.log('Offer submitted:', formData);
-            setIsLoading(false);
-            setSuccessMessage('Offre ajoutée avec succès !');
-            setFormData({
-                entreprise: '',
-                poste: '',
-                mission: '',
-                profil_recherche: '',
-                competences: ''
+        setSuccessMessage('');
+        setErrorMessage('');
+
+        try {
+            const token = await getToken();
+            const response = await fetch(`${API_BASE_URL}/enterprise/offers`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
             });
-            setTimeout(() => setSuccessMessage(''), 3000);
-        }, 1500);
+
+            if (response.ok) {
+                setSuccessMessage('Offre ajoutée avec succès !');
+                setFormData({
+                    poste: '',
+                    mission: '',
+                    profil_recherche: '',
+                    competences: ''
+                });
+                // Notify parent to refresh offers list
+                if (onOfferCreated) onOfferCreated();
+                setTimeout(() => setSuccessMessage(''), 4000);
+            } else {
+                const errorData = await response.json();
+                setErrorMessage(errorData.detail || 'Erreur lors de la création de l\'offre.');
+            }
+        } catch (error) {
+            console.error('Error creating offer:', error);
+            setErrorMessage('Erreur réseau. Veuillez réessayer.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -49,24 +74,18 @@ const AddOfferTab = () => {
             <div className="enterprise-form-body">
                 {successMessage && (
                     <div className="enterprise-success-message">
+                        <i className="fas fa-check-circle" style={{ marginRight: '0.5rem' }}></i>
                         {successMessage}
+                    </div>
+                )}
+                {errorMessage && (
+                    <div className="enterprise-error-message">
+                        <i className="fas fa-exclamation-circle" style={{ marginRight: '0.5rem' }}></i>
+                        {errorMessage}
                     </div>
                 )}
 
                 <form onSubmit={handleSubmit}>
-                    <div className="enterprise-form-group">
-                        <label>Entreprise *</label>
-                        <input
-                            type="text"
-                            name="entreprise"
-                            value={formData.entreprise}
-                            onChange={handleChange}
-                            className="enterprise-input"
-                            placeholder="Ex: TechSolutions"
-                            required
-                        />
-                    </div>
-
                     <div className="enterprise-form-group">
                         <label>Intitulé du poste *</label>
                         <input
@@ -126,7 +145,14 @@ const AddOfferTab = () => {
                             disabled={isLoading}
                             style={{ minWidth: '150px' }}
                         >
-                            {isLoading ? 'Publication...' : "Publier l'offre"}
+                            {isLoading ? (
+                                <>
+                                    <i className="fas fa-spinner fa-spin" style={{ marginRight: '0.5rem' }}></i>
+                                    Publication...
+                                </>
+                            ) : (
+                                "Publier l'offre"
+                            )}
                         </button>
                     </div>
                 </form>

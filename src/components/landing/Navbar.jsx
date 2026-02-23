@@ -4,11 +4,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import AuthPopup from './AuthPopup';
 import logoImg from '../../assets/AIrh_logo.png';
 
-function Navbar({ isEnterprise = false }) {
+function Navbar({ isEnterprise: isEnterprisePage = false }) {
     const [showAuthPopup, setShowAuthPopup] = useState(false);
     const { isSignedIn, signOut } = useAuth();
     const { user } = useUser();
     const navigate = useNavigate();
+
+    // Si connecté : on vérifie la metadata profil. Sinon : on utilise la prop de la page.
+    const isEnterpriseUser = user?.publicMetadata?.profil === 'entreprise';
+    const isEnterprise = isSignedIn ? isEnterpriseUser : isEnterprisePage;
+    const userRole = isEnterpriseUser ? 'enterprise' : 'candidate';
 
     const handleAuthButtonClick = () => {
         setShowAuthPopup(true);
@@ -22,6 +27,8 @@ function Navbar({ isEnterprise = false }) {
         await signOut();
         navigate('/');
     };
+
+    const dashboardPath = userRole === 'enterprise' ? '/enterprise/dashboard' : '/home';
 
     return (
         <>
@@ -37,8 +44,10 @@ function Navbar({ isEnterprise = false }) {
                         {isSignedIn ? (
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                 <span>{user?.firstName || user?.username || 'Utilisateur'}</span>
-                                <Link to="/home" style={{ textDecoration: 'none', color: 'inherit', fontWeight: 'bold' }}>Dashboard</Link>
-                                {!isEnterprise && (
+                                <Link to={dashboardPath} style={{ textDecoration: 'none', color: 'inherit', fontWeight: 'bold' }}>
+                                    Dashboard
+                                </Link>
+                                {userRole === 'candidate' && (
                                     <Link to="/enterprise" className="enterprise-btn">
                                         Espace Entreprise
                                     </Link>
@@ -66,7 +75,7 @@ function Navbar({ isEnterprise = false }) {
             <AuthPopup
                 isOpen={showAuthPopup}
                 onClose={handleClosePopup}
-                isEnterprise={isEnterprise}
+                isEnterprise={isEnterprisePage}
             />
         </>
     );

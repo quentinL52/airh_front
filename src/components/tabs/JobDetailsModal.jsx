@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import '../../style/JobsTab.css';
 
-const JobDetailsModal = ({ job, onClose, isActive, onStartInterview, onOptimizeCV, feedback, onViewFeedback }) => {
+const JobDetailsModal = ({ job, onClose, isActive, onStartInterview, feedback, onViewFeedback }) => {
     // Prevent body scroll when modal is open
     useEffect(() => {
         if (!job) return;
@@ -31,13 +31,6 @@ const JobDetailsModal = ({ job, onClose, isActive, onStartInterview, onOptimizeC
                         <h2>{job.poste}</h2>
                         <p className="detail-subtitle">{job.entreprise} - {job.ville} ({job.contrat})</p>
                         <div className="detail-actions">
-                            <button
-                                className="job-btn optimize-cv-btn"
-                                onClick={() => onOptimizeCV && onOptimizeCV(job)}
-                            >
-                                Optimiser mon CV
-                            </button>
-
                             {feedback ? (
                                 <button
                                     className="job-btn view-result"

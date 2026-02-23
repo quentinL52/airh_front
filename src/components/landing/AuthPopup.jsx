@@ -48,10 +48,17 @@ const AuthPopup = ({ isOpen, onClose, isEnterprise = false }) => {
             isEnterprise
               ? {
                 elements: {
-                  socialButtonsBlockButton: "hidden",
-                  dividerRow: "hidden",
-                  footerAction: "hidden", // Hide "Don't have an account? Sign up"
-                  footer: "hidden"       // Hide entire footer including Clerk branding/links if desired
+                  socialButtonsBlockButton: { display: "none" },
+                  socialButtonsIconButton: { display: "none" },
+                  socialButtonsProviderButton: { display: "none" },
+                  socialButtonsProviderIcon: { display: "none" },
+                  // Masque les conteneurs/sections sociales pour éviter les espaces vides
+                  socialButtonsBlockButtons: { display: "none" },
+                  socialButtonsIconButtons: { display: "none" },
+                  dividerRow: { display: "none" }, // Masque le séparateur "ou"
+                  // Optionnel : masques footer pour un look plus clean
+                  footerAction: { display: "none" },
+                  footer: { display: "none" },     // Hide entire footer including Clerk branding/links if desired
                 },
               }
               : undefined

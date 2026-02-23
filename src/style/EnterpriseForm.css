@@ -118,4 +118,16 @@
     padding: 1rem;
     border-radius: 0.5rem;
     margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.enterprise-error-message {
+    background-color: #fef2f2;
+    color: #991b1b;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
 }

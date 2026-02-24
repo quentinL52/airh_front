@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import Layout from '../components/tabs/Layout';
@@ -38,7 +38,7 @@ const HomePage = ({ user }) => {
         try {
             const token = await getToken();
             const data = await resumeService.getResumeData(userId, token);
-            setCvData(data?.parsed_data?.candidat || null);
+            setCvData(data?.parsed_data?.recommandations || null);
         } catch (error) {
             console.error("Erreur chargement CV:", error);
             setCvData(null);
@@ -47,11 +47,14 @@ const HomePage = ({ user }) => {
         }
     };
 
+    const cvFetchedRef = useRef(false);
+
     useEffect(() => {
-        if (user?.id) {
+        if (user?.id && !cvFetchedRef.current) {
+            cvFetchedRef.current = true;
             fetchCvData(user.id);
         }
-    }, [user]);
+    }, [user?.id]);
 
     const handleSectionChange = (section) => {
         setActiveSection(section);
@@ -79,7 +82,10 @@ const HomePage = ({ user }) => {
                         user={user}
                         cvData={cvData}
                         isLoading={isLoadingCv}
-                        onRefresh={() => fetchCvData(user.id)}
+                        onRefresh={() => {
+                            cvFetchedRef.current = false;
+                            fetchCvData(user.id);
+                        }}
                     />
                 );
             case 'jobs':

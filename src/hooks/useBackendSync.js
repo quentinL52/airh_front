@@ -50,9 +50,17 @@ export const useBackendSync = () => {
                     syncedRef.current = true;
                     setSyncDone(true);
                 } else if (response.status === 403) {
-                    console.warn('Enterprise access denied: user not registered in company_users');
-                    setEnterpriseRejected(true);
-                    await signOutRef.current();
+                    const isEnterprise = user?.publicMetadata?.profil === 'entreprise';
+                    if (isEnterprise) {
+                        console.warn('Enterprise access denied: user not registered in company_users');
+                        setEnterpriseRejected(true);
+                        await signOutRef.current();
+                    } else {
+                        // Pour les candidats, un 403 ne doit pas provoquer une déconnexion
+                        console.warn('Sync 403 for candidate user, proceeding without sign-out');
+                        syncedRef.current = true;
+                        setSyncDone(true);
+                    }
                 } else {
                     console.error('Failed to sync user:', await response.text());
                     syncedRef.current = true;

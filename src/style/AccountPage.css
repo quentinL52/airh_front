@@ -29,9 +29,9 @@
     display: flex;
     align-items: center;
     padding: 1.5rem;
-    background-color: #f9fafb;
+    background-color: #F7F6FF;
     border-radius: 8px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #E8E6F0;
     margin-bottom: 2rem;
 }
 
@@ -148,7 +148,7 @@
 .account-section {
     margin-bottom: 2rem;
     padding-bottom: 2rem;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid #E8E6F0;
 }
 
 .section-title {
@@ -182,8 +182,8 @@
 
 .form-input:focus {
     outline: none;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    border-color: #7B72F5;
+    box-shadow: 0 0 0 3px rgba(123, 114, 245, 0.12);
 }
 
 
@@ -199,23 +199,27 @@
 
 .btn-primary {
     padding: 0.75rem 1.5rem;
-    background-color: #2563eb;
+    background: linear-gradient(135deg, #7B72F5 0%, #5F57D4 100%);
     color: #ffffff;
     border: none;
     border-radius: 6px;
     font-weight: 500;
     font-size: 0.95rem;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s;
     display: flex;
     align-items: center;
+    box-shadow: 0 2px 8px rgba(123, 114, 245, 0.3);
 }
 
 .btn-primary:hover {
-    background-color: #1d4ed8;
+    box-shadow: 0 4px 14px rgba(123, 114, 245, 0.4);
+    transform: translateY(-1px);
 }
 
 .btn-primary:disabled {
-    background-color: #93c5fd;
+    background: #A09CF8;
     cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
 }

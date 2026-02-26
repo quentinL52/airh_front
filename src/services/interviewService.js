@@ -2,10 +2,10 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 
 export const interviewService = {
-    startInterview: async (jobId, customJob = null, token) => {
+    startInterview: async (jobId, customJob = null, token, reset = false) => {
         if (!token) throw new Error("Authentication token missing");
 
-        const payload = { messages: [] };
+        const payload = { messages: [], reset };
         if (jobId) payload.job_id = jobId;
         if (customJob) payload.custom_job = customJob;
 

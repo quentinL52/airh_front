@@ -6,7 +6,7 @@ import recruteurPng from '../../assets/recruteur.png';
 import '../../style/InterviewTab.css';
 import CustomJobModal from './CustomJobModal';
 
-const InterviewTab = ({ jobId }) => {
+const InterviewTab = ({ jobId, reset = false }) => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -72,28 +72,27 @@ const InterviewTab = ({ jobId }) => {
                     setIsLoading(true);
                     const token = await getToken();
 
-                    // Check status to see if we should resume
-                    const statusData = await interviewService.getStatus(jobId, token);
-
-                    if (statusData.status === 'exists' && !statusData.is_finished && statusData.conversation && statusData.conversation.length > 0) {
-                        // Resume logic
-                        setMessages(statusData.conversation);
-                        setInterviewId(statusData.interview_id);
-                        setHasStarted(true);
-                        setIsFinished(statusData.is_finished || false);
+                    // Si reset demande (vient du bouton "Nouvel Entretien" dans JobsTab),
+                    // on demarre directement un nouvel entretien sans verifier le statut
+                    if (reset) {
+                        await startInterview(token, true);
                     } else {
-                        // Start new logic
-                        await startInterview(token);
+                        // Sinon, verifier s'il y a un entretien en cours a reprendre
+                        const statusData = await interviewService.getStatus(jobId, token);
+
+                        if (statusData.status === 'exists' && !statusData.is_finished && statusData.conversation && statusData.conversation.length > 0) {
+                            // Resume existing interview
+                            setMessages(statusData.conversation);
+                            setInterviewId(statusData.interview_id);
+                            setHasStarted(true);
+                            setIsFinished(statusData.is_finished || false);
+                        } else {
+                            await startInterview(token);
+                        }
                     }
                 } catch (e) {
                     console.error("Error checking status:", e);
-                    // Fallback to trying to start new if check fails (e.g. 404 handled in service?)
-                    // The service throws if !ok. If status 500, maybe error.
-                    // If "none", getStatus returns {status: "none"} (success).
-                    // So catch likely means server error or network.
-                    // Let's try starting new anyway as fallback? Or show error?
-                    // Safe to try start.
-                    const token = await getToken(); // Ensure token needed
+                    const token = await getToken();
                     await startInterview(token);
                 } finally {
                     setIsLoading(false);
@@ -104,13 +103,12 @@ const InterviewTab = ({ jobId }) => {
         initInterview();
     }, [jobId]);
 
-    const startInterview = async (token) => {
-        // Can optionally pass token to avoid re-getting it
+    const startInterview = async (token, reset = false) => {
         if (!token) token = await getToken();
         setIsLoading(true);
         setError(null);
         try {
-            const response = await interviewService.startInterview(jobId, null, token);
+            const response = await interviewService.startInterview(jobId, null, token, reset);
             if (response.messages) {
                 setMessages(response.messages);
             }

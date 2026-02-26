@@ -4,7 +4,7 @@
 }
 
 .enterprise-hero {
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    background: linear-gradient(135deg, #F7F6FF 0%, #EDE9FE 100%);
     padding: 140px 1rem 80px;
 }
 
@@ -100,7 +100,7 @@
 
 .enterprise-features .feature-card {
     text-align: center;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #E8E6F0;
 }
 
 .enterprise-features .feature-card i {

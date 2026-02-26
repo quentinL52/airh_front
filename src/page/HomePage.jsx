@@ -20,18 +20,16 @@ const HomePage = ({ user }) => {
     const [searchParams, setSearchParams] = useSearchParams();
     const sectionParam = searchParams.get('section');
     const jobIdParam = searchParams.get('jobId');
+    const resetParam = searchParams.get('reset') === 'true';
 
-    const [activeSection, setActiveSection] = useState(sectionParam || 'home');
+    // Derive activeSection directly from URL — single source of truth, no double render
+    const activeSection = sectionParam || 'home';
+
     const [isAlertVisible, setAlertVisible] = useState(true);
     const [cvData, setCvData] = useState(null);
     const [isLoadingCv, setIsLoadingCv] = useState(true);
     const { getToken } = useAuth();
     const userName = user?.firstName || user?.username || 'Candidat';
-
-    // Sync activeSection with URL search params (e.g. when navigating from JobsTab)
-    useEffect(() => {
-        setActiveSection(sectionParam || 'home');
-    }, [sectionParam]);
 
     const fetchCvData = async (userId) => {
         setIsLoadingCv(true);
@@ -57,25 +55,22 @@ const HomePage = ({ user }) => {
     }, [user?.id]);
 
     const handleSectionChange = (section) => {
-        setActiveSection(section);
         setSearchParams({ section });
     };
-
-    const HomeContent = () => (
-        <div className="home-dashboard">
-            <DashboardHeader userName={userName} />
-            <GettingStarted onStepClick={handleSectionChange} />
-            <Support user={user} cvData={cvData} />
-            {isAlertVisible && (
-                <WelcomeAlert userName={userName} onClose={() => setAlertVisible(false)} />
-            )}
-        </div>
-    );
 
     const renderContent = () => {
         switch (activeSection) {
             case 'home':
-                return <HomeContent />;
+                return (
+                    <div className="home-dashboard">
+                        <DashboardHeader userName={userName} />
+                        <GettingStarted onStepClick={handleSectionChange} />
+                        <Support user={user} cvData={cvData} />
+                        {isAlertVisible && (
+                            <WelcomeAlert userName={userName} onClose={() => setAlertVisible(false)} />
+                        )}
+                    </div>
+                );
             case 'resume':
                 return (
                     <ResumeTab
@@ -91,11 +86,20 @@ const HomePage = ({ user }) => {
             case 'jobs':
                 return <JobsTab />;
             case 'interview':
-                return <InterviewTab jobId={jobIdParam} />;
+                return <InterviewTab jobId={jobIdParam} reset={resetParam} />;
             case 'feedbacks':
                 return <FeedbacksTab />;
             default:
-                return <HomeContent />;
+                return (
+                    <div className="home-dashboard">
+                        <DashboardHeader userName={userName} />
+                        <GettingStarted onStepClick={handleSectionChange} />
+                        <Support user={user} cvData={cvData} />
+                        {isAlertVisible && (
+                            <WelcomeAlert userName={userName} onClose={() => setAlertVisible(false)} />
+                        )}
+                    </div>
+                );
         }
     };
 

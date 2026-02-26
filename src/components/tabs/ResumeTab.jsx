@@ -11,6 +11,31 @@ const toArray = (value) => {
     return [value];
 };
 
+// --- Helper pour formater les textes longs ---
+// Divise le texte par point (ou point-virgule) pour en faire des paragraphes distincts
+// Idéal pour aérer les longs blocs d'analyse
+const formatLongText = (text) => {
+    if (!text) return null;
+
+    // Si c'est déjà un tableau, on le retourne tel quel
+    if (Array.isArray(text)) return text.map((t, i) => <p key={i} className="formatted-paragraph">{t}</p>);
+
+    // Séparation basique par points (suivis d'un espace pour éviter de couper les URLs ou nombres décimaux)
+    // On nettoie aussi les tirets de liste natifs si l'IA en a généré dans le texte brut
+    const sentences = text
+        .split(/(?<=\.)\s+/)
+        .map(s => s.trim().replace(/^[-•]\s*/, ''))
+        .filter(s => s.length > 0);
+
+    return (
+        <div className="formatted-text-block">
+            {sentences.map((sentence, idx) => (
+                <p key={idx} className="formatted-paragraph">{sentence}</p>
+            ))}
+        </div>
+    );
+};
+
 // --- Barre de score ---
 const ScoreBar = ({ label, score, details }) => {
     const color = score >= 75 ? '#16a34a' : score >= 50 ? '#d97706' : '#dc2626';
@@ -23,25 +48,35 @@ const ScoreBar = ({ label, score, details }) => {
             <div className="score-bar-track">
                 <div className="score-bar-fill" style={{ width: `${score}%`, backgroundColor: color }} />
             </div>
-            {details && <p className="score-bar-details">{details}</p>}
+            {details && <div className="score-bar-details">{formatLongText(details)}</div>}
         </div>
     );
 };
 
 // --- Carte d'un projet analysé ---
-const ProjectCard = ({ project, rang, raison }) => {
-    const score = project.score_coherence ?? 0;
+const ProjectCard = ({ project }) => {
+    const score = project.note_globale ?? 0;
     const scoreColor = score >= 75 ? '#16a34a' : score >= 50 ? '#d97706' : '#dc2626';
     const scoreLabel = score >= 75 ? 'Très pertinent' : score >= 50 ? 'Pertinent' : 'Peu pertinent';
+
     const pointsForts = toArray(project.points_forts);
-    const pointsAmelio = toArray(project.points_amelioration);
-    const conseilsDesc = toArray(project.conseils_description);
+    const pointsVigilance = toArray(project.points_vigilance);
+    const evaluation = project.evaluation || {};
+
+    const axes = [
+        { key: 'pertinence', label: 'Pertinence' },
+        { key: 'complexite', label: 'Complexité' },
+        { key: 'stack', label: 'Tech Stack' },
+        { key: 'innovation', label: 'Innovation' },
+        { key: 'impact', label: 'Impact' },
+        { key: 'ownership', label: 'Ownership' },
+        { key: 'maturite', label: 'Maturité' },
+    ];
 
     return (
         <div className="project-analysis-card">
             <div className="project-analysis-header">
                 <div className="project-analysis-title-row">
-                    {rang != null && <span className="project-rank">#{rang}</span>}
                     <h5 className="project-analysis-title">{project.titre || 'Projet sans titre'}</h5>
                 </div>
                 <div className="project-score-badge" style={{ color: scoreColor, borderColor: scoreColor }}>
@@ -51,37 +86,52 @@ const ProjectCard = ({ project, rang, raison }) => {
             </div>
 
             <div className="project-analysis-body">
-                {raison && (
-                    <div className="project-field">
-                        <span className="project-field-label">Cohérence poste visé</span>
-                        <p className="project-field-value">{raison}</p>
+                {project.resume && (
+                    <div className="project-field-card">
+                        <span className="project-field-label">Résumé</span>
+                        <div className="project-field-value">{formatLongText(project.resume)}</div>
                     </div>
                 )}
+
+                <div className="project-axes-grid">
+                    {axes.map(({ key, label }) => {
+                        const axis = evaluation[key];
+                        if (!axis) return null;
+                        const axisColor = axis.score >= 7 ? '#16a34a' : axis.score >= 5 ? '#d97706' : '#dc2626';
+                        return (
+                            <div key={key} className="project-axis-card">
+                                <div className="project-axis-header">
+                                    <span className="project-axis-label">{label}</span>
+                                    <span className="project-axis-score" style={{ color: axisColor }}>{axis.score}/10</span>
+                                </div>
+                                <p className="project-axis-justification">{axis.justification}</p>
+                            </div>
+                        );
+                    })}
+                </div>
 
                 {pointsForts.length > 0 && (
-                    <div className="project-field">
+                    <div className="project-field-card">
                         <span className="project-field-label">Points forts</span>
                         <ul className="project-list">
-                            {pointsForts.map((p, i) => <li key={i}>{p}</li>)}
+                            {pointsForts.map((p, i) => <li key={i}>{formatLongText(p)}</li>)}
                         </ul>
                     </div>
                 )}
 
-                {pointsAmelio.length > 0 && (
-                    <div className="project-field">
-                        <span className="project-field-label">Points d'amélioration</span>
+                {pointsVigilance.length > 0 && (
+                    <div className="project-field-card">
+                        <span className="project-field-label">Points de vigilance</span>
                         <ul className="project-list">
-                            {pointsAmelio.map((p, i) => <li key={i}>{p}</li>)}
+                            {pointsVigilance.map((p, i) => <li key={i}>{formatLongText(p)}</li>)}
                         </ul>
                     </div>
                 )}
 
-                {conseilsDesc.length > 0 && (
-                    <div className="project-field">
-                        <span className="project-field-label">Conseils rédaction</span>
-                        <ul className="project-list">
-                            {conseilsDesc.map((c, i) => <li key={i}>{c}</li>)}
-                        </ul>
+                {project.verdict_recruteur && (
+                    <div className="project-verdict-box">
+                        <span className="project-verdict-label">L'avis de Roni</span>
+                        <div className="project-verdict-text">{formatLongText(project.verdict_recruteur)}</div>
                     </div>
                 )}
             </div>
@@ -91,21 +141,12 @@ const ProjectCard = ({ project, rang, raison }) => {
 
 // --- Affichage principal des recommandations ---
 const RecommandationsDisplay = ({ cvData }) => {
-    const header = cvData.header_analysis || {};
     const postes = toArray(cvData.postes_recommandes);
     const qualite = cvData.qualite_cv || {};
     const projets = toArray(cvData.analyse_projets);
-    const ordreProjets = toArray(cvData.ordre_mise_en_avant_projets);
-    const coherenceGlobale = cvData.coherence_globale_projets || {};
 
     const scoreGlobal = qualite.score_global ?? 0;
     const scoreGlobalColor = scoreGlobal >= 75 ? '#16a34a' : scoreGlobal >= 50 ? '#d97706' : '#dc2626';
-
-    // Map titre -> { rang, raison } depuis l'ordre de mise en avant
-    const projetMeta = {};
-    ordreProjets.forEach(item => {
-        if (item.titre) projetMeta[item.titre] = { rang: item.rang, raison: item.raison };
-    });
 
     const criteres = [
         { key: 'compatibilite_ats', label: 'Compatibilité ATS' },
@@ -161,11 +202,20 @@ const RecommandationsDisplay = ({ cvData }) => {
                             })}
                         </div>
 
+                        {toArray(qualite.points_forts).length > 0 && (
+                            <div className="quality-section">
+                                <h6 className="quality-section-title">Points forts</h6>
+                                <ul className="quality-list">
+                                    {toArray(qualite.points_forts).map((p, i) => <li key={i}>{formatLongText(p)}</li>)}
+                                </ul>
+                            </div>
+                        )}
+
                         {toArray(qualite.red_flags).length > 0 && (
                             <div className="quality-section">
-                                <h6 className="quality-section-title">Points d'attention</h6>
+                                <h6 className="quality-section-title">Points de vigilance</h6>
                                 <ul className="quality-list">
-                                    {toArray(qualite.red_flags).map((flag, i) => <li key={i}>{flag}</li>)}
+                                    {toArray(qualite.red_flags).map((flag, i) => <li key={i}>{formatLongText(flag)}</li>)}
                                 </ul>
                             </div>
                         )}
@@ -174,45 +224,35 @@ const RecommandationsDisplay = ({ cvData }) => {
                             <div className="quality-section">
                                 <h6 className="quality-section-title">Conseils prioritaires</h6>
                                 <ul className="quality-list">
-                                    {toArray(qualite.conseils_prioritaires).map((c, i) => <li key={i}>{c}</li>)}
+                                    {toArray(qualite.conseils_prioritaires).map((c, i) => <li key={i}>{formatLongText(c)}</li>)}
                                 </ul>
+                            </div>
+                        )}
+
+                        {qualite.adaptation_seniorite && (
+                            <div className="quality-section">
+                                <h6 className="quality-section-title">Le point de vue de Roni</h6>
+                                <div className="quality-text-box">{formatLongText(qualite.adaptation_seniorite)}</div>
                             </div>
                         )}
                     </div>
                 </div>
             )}
 
-            {/* Analyse des projets — triés par rang de pertinence */}
+            {/* Analyse des projets */}
             {projets.length > 0 && (
                 <div className="reco-block">
                     <div className="reco-block-header">
                         <span>Analyse des projets</span>
-                        <span className="reco-block-header-sub">(par ordre de pertinence)</span>
-                        {typeof coherenceGlobale.score === 'number' && (
-                            <span className="coherence-badge">
-                                Cohérence globale : {coherenceGlobale.score}/100
-                            </span>
-                        )}
                     </div>
                     <div className="reco-block-body">
-                        {coherenceGlobale.commentaire && (
-                            <p className="coherence-comment">{coherenceGlobale.commentaire}</p>
-                        )}
                         <div className="projects-analysis-list">
-                            {[...projets]
-                                .sort((a, b) => {
-                                    const rangA = projetMeta[a.titre]?.rang ?? 99;
-                                    const rangB = projetMeta[b.titre]?.rang ?? 99;
-                                    return rangA - rangB;
-                                })
-                                .map((project, i) => (
-                                    <ProjectCard
-                                        key={i}
-                                        project={project}
-                                        rang={projetMeta[project.titre]?.rang ?? null}
-                                        raison={projetMeta[project.titre]?.raison ?? null}
-                                    />
-                                ))}
+                            {projets.map((project, i) => (
+                                <ProjectCard
+                                    key={i}
+                                    project={project}
+                                />
+                            ))}
                         </div>
                     </div>
                 </div>

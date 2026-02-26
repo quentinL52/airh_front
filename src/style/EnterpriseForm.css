@@ -65,8 +65,8 @@
 .enterprise-input:focus,
 .enterprise-textarea:focus {
     outline: none;
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    border-color: #7B72F5;
+    box-shadow: 0 0 0 3px rgba(123, 114, 245, 0.12);
 }
 
 .enterprise-textarea {
@@ -88,17 +88,21 @@
 }
 
 .enterprise-btn.primary {
-    background-color: #6366f1;
+    background: linear-gradient(135deg, #7B72F5 0%, #5F57D4 100%);
     color: white;
+    box-shadow: 0 2px 8px rgba(123, 114, 245, 0.3);
 }
 
 .enterprise-btn.primary:hover {
-    background-color: #4f46e5;
+    box-shadow: 0 4px 14px rgba(123, 114, 245, 0.4);
+    transform: translateY(-1px);
 }
 
 .enterprise-btn.primary:disabled {
-    background-color: #cbd5e1;
+    background: #A09CF8;
     cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
 }
 
 .enterprise-btn.secondary {

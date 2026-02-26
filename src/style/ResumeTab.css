@@ -9,9 +9,9 @@
     align-items: flex-start;
     padding: 2rem;
     background: white;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #E8E6F0;
     border-radius: 0.75rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 6px rgba(123, 114, 245, 0.06);
     margin-bottom: 2rem;
 }
 
@@ -21,18 +21,18 @@
 }
 
 .upload-area {
-    border: 2px dashed #e5e7eb;
-    border-radius: 0.5rem;
-    padding: 1.75rem 1.5rem;
+    border: 2px dashed #C4C0F9;
+    border-radius: 0.625rem;
+    padding: 2rem 1.5rem;
     text-align: center;
     cursor: pointer;
     transition: border-color 0.2s, background-color 0.2s;
-    background-color: #f9fafb;
+    background-color: #F0EFFE;
 }
 
 .upload-area.drag-over {
-    border-color: #6366f1;
-    background-color: #f0f4ff;
+    border-color: #7B72F5;
+    background-color: #E8E5FD;
 }
 
 .upload-area .upload-text {
@@ -62,9 +62,17 @@
     margin-top: 0.5rem;
 }
 
-.status-message.error   { color: #dc2626; }
-.status-message.success { color: #16a34a; }
-.status-message.info    { color: #2563eb; }
+.status-message.error {
+    color: #dc2626;
+}
+
+.status-message.success {
+    color: #16a34a;
+}
+
+.status-message.info {
+    color: #2563eb;
+}
 
 .upload-actions {
     display: flex;
@@ -75,18 +83,28 @@
 }
 
 .btn-primary {
-    background-color: #6366f1;
+    background: linear-gradient(135deg, #7B72F5 0%, #5F57D4 100%);
     color: white;
     padding: 0.75rem 1rem;
     border: none;
     border-radius: 0.5rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(123, 114, 245, 0.3);
 }
 
-.btn-primary:hover:not(:disabled) { background-color: #4f46e5; }
-.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary:hover:not(:disabled) {
+    box-shadow: 0 4px 14px rgba(123, 114, 245, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
 
 .btn-danger-custom {
     background-color: white;
@@ -100,15 +118,18 @@
     transition: background-color 0.2s, border-color 0.2s;
 }
 
-.btn-danger-custom:hover { background-color: #fef2f2; border-color: #dc2626; }
+.btn-danger-custom:hover {
+    background-color: #fef2f2;
+    border-color: #dc2626;
+}
 
 .roni-explanation {
     flex-grow: 1;
-    background-color: #f8fafc;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.5rem;
+    background-color: #F7F6FF;
+    border: 1px solid #E8E6F0;
+    border-radius: 0.625rem;
     padding: 1.25rem 1.5rem;
-    color: #475569;
+    color: #5A5773;
     align-self: stretch;
 }
 
@@ -122,14 +143,16 @@
     background: none;
     border: none;
     padding: 0;
-    color: #6366f1;
+    color: #7B72F5;
     font-size: 0.875rem;
     text-decoration: underline;
     cursor: pointer;
     font-weight: 500;
 }
 
-.btn-link-contact:hover { color: #4f46e5; }
+.btn-link-contact:hover {
+    color: #5F57D4;
+}
 
 
 /* ============================================================
@@ -141,19 +164,19 @@
 
 .cv-display-wrapper {
     background: white;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #E8E6F0;
     border-radius: 0.75rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 6px rgba(123, 114, 245, 0.06);
     overflow: hidden;
 }
 
 .empty-state-container {
     background: white;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #E8E6F0;
     border-radius: 0.75rem;
     text-align: center;
     padding: 3rem;
-    color: #6b7280;
+    color: #9690B0;
 }
 
 .empty-state-container h4 {
@@ -169,15 +192,16 @@
 /* En-tête "Recommandations de Roni" */
 .reco-main-header {
     padding: 1rem 1.5rem;
-    background-color: #f9fafb;
-    border-bottom: 1px solid #e5e7eb;
+    background: linear-gradient(135deg, #7B72F5 0%, #5F57D4 100%);
+    border-bottom: none;
     font-weight: 700;
     font-size: 1rem;
-    color: #111827;
+    color: white;
+    letter-spacing: 0.01em;
 }
 
 .reco-main-body {
-    padding: 1.5rem;
+    padding: 1.5rem 1.5rem 1.75rem;
 }
 
 
@@ -191,21 +215,31 @@
 }
 
 .reco-block {
-    border: 1px solid #e5e7eb;
-    border-radius: 0.5rem;
-    overflow: hidden;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
+    padding-bottom: 1.25rem;
+    margin-bottom: 0.25rem;
+    border-bottom: 1px solid #E8E6F0;
+}
+
+.reco-block:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
 }
 
 .reco-block-header {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 0.7rem 1.25rem;
-    background-color: #f9fafb;
-    border-bottom: 1px solid #e5e7eb;
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: #1e293b;
+    padding: 0 0 0.6rem 0;
+    background-color: transparent;
+    border-bottom: none;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #9690B0;
 }
 
 .reco-block-header-sub {
@@ -215,7 +249,7 @@
 }
 
 .reco-block-body {
-    padding: 1.25rem;
+    padding: 0;
 }
 
 
@@ -261,9 +295,9 @@
 .poste-chip {
     display: inline-block;
     padding: 0.3rem 0.875rem;
-    background-color: #eff6ff;
-    color: #1d4ed8;
-    border: 1px solid #bfdbfe;
+    background-color: #F0EFFE;
+    color: #7B72F5;
+    border: 1px solid #C4C0F9;
     border-radius: 9999px;
     font-size: 0.875rem;
     font-weight: 500;
@@ -275,11 +309,13 @@
    ============================================================ */
 .score-global-badge {
     margin-left: auto;
-    padding: 0.15rem 0.625rem;
+    padding: 0.25rem 0.875rem;
     border-radius: 9999px;
     color: white;
-    font-size: 0.8rem;
+    font-size: 0.875rem;
     font-weight: 700;
+    letter-spacing: 0.02em;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
 }
 
 .scores-grid {
@@ -313,8 +349,8 @@
 }
 
 .score-bar-track {
-    height: 5px;
-    background-color: #e5e7eb;
+    height: 8px;
+    background-color: #EDE9FE;
     border-radius: 9999px;
     overflow: hidden;
 }
@@ -371,22 +407,21 @@
     margin-left: auto;
     font-size: 0.8rem;
     font-weight: 600;
-    color: #4f46e5;
-    background: #eef2ff;
-    border: 1px solid #c7d2fe;
+    color: #7B72F5;
+    background: #F0EFFE;
+    border: 1px solid #C4C0F9;
     border-radius: 9999px;
     padding: 0.15rem 0.75rem;
 }
 
 .coherence-comment {
     font-size: 0.9rem;
-    color: #475569;
+    color: #5A5773;
     line-height: 1.55;
     margin: 0 0 1.25rem;
-    padding: 0.75rem 1rem;
-    background-color: #f8fafc;
-    border-left: 3px solid #6366f1;
-    border-radius: 0 0.375rem 0.375rem 0;
+    padding: 0.875rem 1.125rem;
+    background-color: #F0EFFE;
+    border-radius: 0.625rem;
 }
 
 .projects-analysis-list {
@@ -395,11 +430,18 @@
     gap: 1rem;
 }
 
-/* Carte projet */
+/* Carte projet (épurée, pas de boîte dans une boîte) */
 .project-analysis-card {
-    border: 1px solid #e5e7eb;
-    border-radius: 0.5rem;
-    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #E8E6F0;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.project-analysis-card:last-child {
+    margin-bottom: 0;
 }
 
 .project-analysis-header {
@@ -408,9 +450,7 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    background-color: #f9fafb;
-    border-bottom: 1px solid #e5e7eb;
+    padding: 0 0 1rem 0;
 }
 
 .project-analysis-title-row {
@@ -424,7 +464,7 @@
     font-size: 0.75rem;
     font-weight: 700;
     color: white;
-    background-color: #6366f1;
+    background: linear-gradient(135deg, #7B72F5 0%, #5F57D4 100%);
     border-radius: 9999px;
     padding: 0.1rem 0.5rem;
 }
@@ -458,10 +498,9 @@
 
 /* Corps de la carte projet */
 .project-analysis-body {
-    padding: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.875rem;
+    gap: 1.25rem;
 }
 
 .project-field {
@@ -470,7 +509,15 @@
     gap: 0.3rem;
 }
 
-.project-field-label {
+.project-field-card {
+    padding: 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.project-field-label,
+.project-field-card .project-field-label {
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -478,11 +525,20 @@
     color: #9ca3af;
 }
 
+.project-field-card .project-field-label {
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 0.35rem;
+    margin-bottom: 0.25rem;
+}
+
 .project-field-value {
     font-size: 0.9rem;
     color: #374151;
     line-height: 1.5;
     margin: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .project-list {
@@ -502,6 +558,96 @@
 
 
 
+/* Nouvelles sections d'évaluation */
+.project-axes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.project-axis-card {
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    background: #F8FAFC;
+    border-radius: 0.5rem;
+}
+
+.project-axis-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.project-axis-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #334155;
+}
+
+.project-axis-score {
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.project-axis-justification {
+    font-size: 0.85rem;
+    color: #475569;
+    margin: 0;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.project-verdict-box {
+    margin-top: 1rem;
+    background-color: #F0EFFE;
+    padding: 1rem 1.25rem;
+    border-radius: 0.625rem;
+}
+
+.project-verdict-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #7B72F5;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 0.5rem;
+}
+
+.project-verdict-text {
+    font-size: 0.9rem;
+    color: #334155;
+    margin: 0;
+    line-height: 1.6;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.formatted-paragraph {
+    margin: 0 0 0.5rem 0;
+    line-height: 1.6;
+}
+
+.formatted-paragraph:last-child {
+    margin-bottom: 0;
+}
+
+.quality-text-box {
+    font-size: 0.9rem;
+    color: #374151;
+    line-height: 1.6;
+    margin: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
 
 /* ============================================================
    SKELETON LOADER
@@ -518,29 +664,46 @@
     position: absolute;
     inset: 0;
     transform: translateX(-100%);
-    background-image: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0) 0,
-        rgba(255, 255, 255, 0.2) 20%,
-        rgba(255, 255, 255, 0.5) 60%,
-        rgba(255, 255, 255, 0)
-    );
+    background-image: linear-gradient(90deg,
+            rgba(255, 255, 255, 0) 0,
+            rgba(255, 255, 255, 0.2) 20%,
+            rgba(255, 255, 255, 0.5) 60%,
+            rgba(255, 255, 255, 0));
     animation: shimmer 2s infinite;
 }
 
 @keyframes shimmer {
-    100% { transform: translateX(100%); }
+    100% {
+        transform: translateX(100%);
+    }
 }
 
-.skeleton-text  { height: 1rem; width: 100%; margin-bottom: 0.5rem; }
-.skeleton-badge { height: 1.5rem; width: 4rem; border-radius: 9999px; }
-.skeleton-block { width: 100%; border-radius: 0.5rem; }
+.skeleton-text {
+    height: 1rem;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.skeleton-badge {
+    height: 1.5rem;
+    width: 4rem;
+    border-radius: 9999px;
+}
+
+.skeleton-block {
+    width: 100%;
+    border-radius: 0.5rem;
+}
+
 .skeleton-header {
     height: 3rem;
     background-color: #f9fafb;
     border-bottom: 1px solid #e5e7eb;
 }
-.skeleton-body { padding: 1.25rem; }
+
+.skeleton-body {
+    padding: 1.25rem;
+}
 
 
 /* ============================================================
@@ -559,8 +722,15 @@
         margin-top: 0;
     }
 
-    .upload-actions button { flex: 1; }
-    .upload-card-content   { width: 100%; }
+    .upload-actions button {
+        flex: 1;
+    }
 
-    .profile-grid { gap: 1.25rem; }
+    .upload-card-content {
+        width: 100%;
+    }
+
+    .profile-grid {
+        gap: 1.25rem;
+    }
 }

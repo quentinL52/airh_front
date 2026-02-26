@@ -64,7 +64,7 @@
 
 .form-label {
     display: block;
-    color: #4F46E5; 
+    color: #7B72F5;
     font-weight: 500;
     margin-bottom: 0.3rem;
 }
@@ -73,19 +73,19 @@
     width: 100%;
     padding: 0.75rem;
     border-radius: 8px;
-    border: 1px solid #E5E7EB; 
+    border: 1px solid #E8E6F0;
     font-size: 1rem;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .form-control:focus {
     outline: none;
-    border-color: #6366F1; 
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+    border-color: #7B72F5;
+    box-shadow: 0 0 0 3px rgba(123, 114, 245, 0.12);
 }
 
 .btn-contact {
-    background: #6366F1; 
+    background: linear-gradient(135deg, #7B72F5 0%, #5F57D4 100%);
     border: none;
     color: #fff;
     font-weight: 600;
@@ -93,17 +93,20 @@
     border-radius: 8px;
     padding: 10px 28px;
     width: 100%;
-    transition: background 0.2s;
+    transition: all 0.2s;
     cursor: pointer;
+    box-shadow: 0 2px 8px rgba(123, 114, 245, 0.3);
 }
 
 .btn-contact:hover:not(:disabled) {
-    background: #4F46E5;
+    box-shadow: 0 4px 14px rgba(123, 114, 245, 0.4);
+    transform: translateY(-1px);
 }
 
 .btn-contact:disabled {
-    background: #a5b4fc;
+    background: #A09CF8;
     cursor: not-allowed;
+    box-shadow: none;
 }
 
 .contact-success-message, .contact-error-message {

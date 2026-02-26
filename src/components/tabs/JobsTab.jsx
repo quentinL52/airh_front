@@ -204,20 +204,9 @@ const JobsTab = () => {
         setShowModal(false);
     };
 
-    const handleNewInterview = async () => {
-        try {
-            setIsLoading(true);
-            const token = await getToken();
-            await interviewService.deleteHistory(selectedJob.id, token);
-            // Refresh active list locally or just navigate (since it's now "new")
-            navigate(`/home?section=interview&jobId=${selectedJob.id}`);
-            setShowModal(false);
-        } catch (e) {
-            console.error(e);
-            alert("Erreur lors de la suppression de l'ancien entretien");
-        } finally {
-            setIsLoading(false);
-        }
+    const handleNewInterview = () => {
+        navigate(`/home?section=interview&jobId=${selectedJob.id}&reset=true`);
+        setShowModal(false);
     };
 
     const renderContent = () => {

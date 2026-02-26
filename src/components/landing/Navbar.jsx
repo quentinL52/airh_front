@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthPopup from './AuthPopup';
@@ -9,11 +9,31 @@ function Navbar({ isEnterprise: isEnterprisePage = false }) {
     const { isSignedIn, signOut } = useAuth();
     const { user } = useUser();
     const navigate = useNavigate();
+    // Mémoriser si le popup était ouvert avant la connexion (cas email/magic link)
+    const popupWasOpen = useRef(false);
 
     // Si connecté : on vérifie la metadata profil. Sinon : on utilise la prop de la page.
     const isEnterpriseUser = user?.publicMetadata?.profil === 'entreprise';
     const isEnterprise = isSignedIn ? isEnterpriseUser : isEnterprisePage;
     const userRole = isEnterpriseUser ? 'enterprise' : 'candidate';
+
+    // Suivre l'état du popup dans une ref pour le détecter dans l'effet de connexion
+    useEffect(() => {
+        popupWasOpen.current = showAuthPopup;
+    }, [showAuthPopup]);
+
+    // Rediriger automatiquement dès que Clerk confirme la connexion
+    // Couvre le cas email/magic link où la page ne reload pas (pas d'OAuth redirect)
+    useEffect(() => {
+        if (isSignedIn && user && popupWasOpen.current) {
+            popupWasOpen.current = false;
+            setShowAuthPopup(false);
+            const target = user.publicMetadata?.profil === 'entreprise'
+                ? '/enterprise/dashboard'
+                : '/home';
+            navigate(target, { replace: true });
+        }
+    }, [isSignedIn, user, navigate]);
 
     const handleAuthButtonClick = () => {
         setShowAuthPopup(true);

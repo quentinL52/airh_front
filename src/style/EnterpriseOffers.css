@@ -63,7 +63,7 @@
 .enterprise-btn-retry {
     margin-top: 0.5rem;
     padding: 0.5rem 1.25rem;
-    border: 1px solid #6366f1;
+    border: 1px solid #7B72F5;
     background: transparent;
     color: #6366f1;
     border-radius: 0.5rem;
@@ -73,7 +73,7 @@
 }
 
 .enterprise-btn-retry:hover {
-    background: #6366f1;
+    background: #7B72F5;
     color: white;
 }
 
@@ -98,8 +98,8 @@
 }
 
 .enterprise-offer-row:hover {
-    border-color: #6366f1;
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
+    border-color: #7B72F5;
+    box-shadow: 0 2px 8px rgba(123, 114, 245, 0.12);
     transform: translateY(-1px);
 }
 
@@ -115,7 +115,7 @@
     width: 40px;
     height: 40px;
     border-radius: 0.5rem;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    background: linear-gradient(135deg, #7B72F5, #5F57D4);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -161,7 +161,7 @@
 
 .enterprise-offer-interviews {
     font-weight: 600;
-    color: #6366f1;
+    color: #7B72F5;
 }
 
 .enterprise-offer-arrow {
@@ -171,7 +171,7 @@
 }
 
 .enterprise-offer-row:hover .enterprise-offer-arrow {
-    color: #6366f1;
+    color: #7B72F5;
 }
 
 /* --- Back Button --- */
@@ -191,8 +191,8 @@
 }
 
 .enterprise-back-btn:hover {
-    border-color: #6366f1;
-    color: #6366f1;
+    border-color: #7B72F5;
+    color: #7B72F5;
 }
 
 /* --- Sort Button --- */
@@ -211,8 +211,8 @@
 }
 
 .enterprise-sort-btn:hover {
-    border-color: #6366f1;
-    color: #6366f1;
+    border-color: #7B72F5;
+    color: #7B72F5;
 }
 
 /* --- Interview Rows --- */
@@ -230,8 +230,8 @@
 }
 
 .enterprise-interview-row:hover {
-    border-color: #6366f1;
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
+    border-color: #7B72F5;
+    box-shadow: 0 2px 8px rgba(123, 114, 245, 0.12);
     transform: translateY(-1px);
 }
 
@@ -308,7 +308,7 @@
 }
 
 .enterprise-detail-card h3 i {
-    color: #6366f1;
+    color: #7B72F5;
 }
 
 .enterprise-detail-card p {
@@ -397,7 +397,7 @@
 
 .enterprise-metric-bar {
     height: 100%;
-    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    background: linear-gradient(90deg, #7B72F5, #A09CF8);
     border-radius: 4px;
     transition: width 0.5s ease;
 }
@@ -502,7 +502,7 @@
     font-size: 0.7rem;
     font-weight: 600;
     text-transform: uppercase;
-    color: #6366f1;
+    color: #7B72F5;
     margin-bottom: 0.25rem;
 }
 

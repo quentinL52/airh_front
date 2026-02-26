@@ -42,8 +42,8 @@ const AuthPopup = ({ isOpen, onClose, isEnterprise = false }) => {
       <div className="auth-popup-container" style={{ padding: 0, overflow: 'hidden', maxWidth: 'fit-content' }}>
         {/* Clerk's SignIn component handles everything */}
         <SignIn
-          signUpUrl="/sign-up"
-          forceRedirectUrl={isEnterprise ? "/enterprise/dashboard" : "/home"} // paramétre pour n'afficher que la connection par login pour entreprise
+          forceRedirectUrl={isEnterprise ? "/enterprise/dashboard" : "/home"}
+          signUpForceRedirectUrl="/home"
           appearance={
             isEnterprise
               ? {

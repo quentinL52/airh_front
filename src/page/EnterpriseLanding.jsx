@@ -23,10 +23,16 @@ const EnterpriseLanding = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState(null);
 
-    // Auto-redirect if already signed in as enterprise user
+    // Auto-redirect if already signed in
     React.useEffect(() => {
-        if (isSignedIn && user?.publicMetadata?.profil === 'entreprise') {
-            navigate('/enterprise/dashboard');
+        if (isSignedIn && user) {
+            const isEnterprise = user.publicMetadata?.profil === 'entreprise';
+            const target = isEnterprise ? '/enterprise/dashboard' : '/home';
+
+            const timer = setTimeout(() => {
+                navigate(target);
+            }, 1000); // 1 second delay
+            return () => clearTimeout(timer);
         }
     }, [isSignedIn, user, navigate]);
 

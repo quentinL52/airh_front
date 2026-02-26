@@ -40,7 +40,7 @@ function AppRoutes() {
       <Route
         path="/home"
         element={
-          <ProtectedRoute requiredRole="candidate">
+          <ProtectedRoute requiredRole="candidate" syncDone={syncDone} enterpriseRejected={enterpriseRejected}>
             <HomePage />
           </ProtectedRoute>
         }
@@ -48,7 +48,7 @@ function AppRoutes() {
       <Route
         path="/account"
         element={
-          <ProtectedRoute requiredRole="candidate">
+          <ProtectedRoute requiredRole="candidate" syncDone={syncDone} enterpriseRejected={enterpriseRejected}>
             <AccountPage />
           </ProtectedRoute>
         }

@@ -11,14 +11,14 @@
     position: fixed;
     bottom: 1.5rem;
     right: 1.5rem;
-    background-color: #dbeafe;
-    border: 1px solid #93c5fd;
-    border-radius: 0.5rem;
+    background-color: #F0EFFE;
+    border: 1px solid #C4C0F9;
+    border-radius: 0.625rem;
     padding: 0.75rem 1rem;
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 25px rgba(123, 114, 245, 0.15);
     z-index: 9999;
     min-width: 280px;
     max-width: 350px;
@@ -26,7 +26,7 @@
 }
 
 .alert-icon {
-    color: #2563eb;
+    color: #7B72F5;
     font-size: 1.25rem;
 }
 
@@ -35,7 +35,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #1e40af;
+    color: #5F57D4;
     font-weight: 500;
 }
 
@@ -97,7 +97,7 @@
 
 .step-card {
     background: white;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #E8E6F0;
     border-radius: 0.75rem;
     padding: 2rem;
     position: relative;
@@ -107,8 +107,8 @@
 
 .step-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    border-color: #6366f1;
+    box-shadow: 0 10px 25px rgba(123, 114, 245, 0.12);
+    border-color: #7B72F5;
 }
 
 .step-header {
@@ -130,7 +130,7 @@
 .step-icon {
     width: 60px;
     height: 60px;
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    background: linear-gradient(135deg, #7B72F5 0%, #5F57D4 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -138,6 +138,7 @@
     color: white;
     font-size: 2rem;
     margin: 1rem auto 1.5rem;
+    box-shadow: 0 4px 12px rgba(123, 114, 245, 0.3);
 }
 
 .step-title {
@@ -171,7 +172,7 @@
 }
 
 .step-card:hover .step-arrow {
-    color: #6366f1;
+    color: #7B72F5;
     transform: translateX(4px);
 }
 
@@ -182,7 +183,7 @@
 
 .support-card {
     background: white;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #E8E6F0;
     border-radius: 0.75rem;
     padding: 1rem;
     text-align: left;
@@ -203,7 +204,7 @@
 }
 
 .contact-btn {
-    background-color: #6366f1;
+    background: linear-gradient(135deg, #7B72F5 0%, #5F57D4 100%);
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
@@ -212,10 +213,11 @@
     cursor: pointer;
     transition: all 0.2s ease;
     font-size: 0.875rem;
+    box-shadow: 0 2px 8px rgba(123, 114, 245, 0.3);
 }
 
 .contact-btn:hover {
-    background-color: #4f46e5;
+    box-shadow: 0 4px 14px rgba(123, 114, 245, 0.4);
     transform: translateY(-1px);
 }
 

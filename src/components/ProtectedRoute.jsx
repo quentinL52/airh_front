@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children, requiredRole, syncDone, enterpriseRejected }
   const { user } = useUser();
   const location = useLocation();
 
-  if (!isLoaded) {
+  if (!isLoaded || (isSignedIn && user && !user.id)) {
     return (
       <div style={{
         display: 'flex',
@@ -43,25 +43,24 @@ const ProtectedRoute = ({ children, requiredRole, syncDone, enterpriseRejected }
       return <Navigate to={redirectPath} replace />;
     }
 
-    // Enterprise routes: wait for backend verification (company_users check)
-    if (requiredRole === 'enterprise') {
-      if (enterpriseRejected) {
-        // Backend rejected: user not in company_users → signOut already triggered
-        return <Navigate to="/enterprise" replace />;
-      }
-      if (!syncDone) {
-        return (
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100vh',
-            backgroundColor: '#f8fafc'
-          }}>
-            <div style={{ padding: '2rem' }}>Vérification du compte entreprise...</div>
-          </div>
-        );
-      }
+    if (enterpriseRejected) {
+      return <Navigate to={userRole === 'enterprise' ? "/enterprise" : "/"} replace />;
+    }
+
+    // Attendre que le backend ait synchronisé l'utilisateur (créé dans Supabase)
+    // avant de rendre la page — évite les erreurs 404 sur les premiers appels API
+    if (!syncDone) {
+      return (
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          backgroundColor: '#f8fafc'
+        }}>
+          <div style={{ padding: '2rem' }}>Connexion en cours...</div>
+        </div>
+      );
     }
   }
 

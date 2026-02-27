@@ -1,8 +1,8 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+// VULN-04 : Token exclusivement depuis le paramètre (mémoire Clerk) — jamais depuis localStorage
 const getAuthHeaders = (token) => {
-    const accessToken = token || localStorage.getItem('access_token');
-    return accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {};
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
 };
 
 export const resumeService = {

@@ -62,9 +62,8 @@ const SubscriptionTab = () => {
                     </div>
                     <div className="plan-features">
                         <ul>
-                            <li><i className="fas fa-check"></i> 1 extraction de CV par mois</li>
+                            <li><i className="fas fa-check"></i> 1 analyse de CV par mois</li>
                             <li><i className="fas fa-check"></i> 5 entretiens & feedbacks par mois</li>
-                            <li><i className="fas fa-check"></i> Accès au support basique</li>
                         </ul>
                     </div>
                     <div className="plan-action">
@@ -75,7 +74,6 @@ const SubscriptionTab = () => {
 
                 {/* Premium Plan */}
                 <div className="pricing-card premium-plan highlight">
-                    <div className="plan-badge">Le plus populaire</div>
                     <div className="plan-header">
                         <h3>AIRH Premium</h3>
                         <div className="plan-price">
@@ -85,10 +83,9 @@ const SubscriptionTab = () => {
                     </div>
                     <div className="plan-features">
                         <ul>
-                            <li><i className="fas fa-check"></i> <strong>Jusqu'à 10</strong> extractions de CV par mois</li>
-                            <li><i className="fas fa-check"></i> <strong>40</strong> entretiens & feedbacks par mois</li>
-                            <li><i className="fas fa-check"></i> Amélioration continue du profil</li>
-                            <li><i className="fas fa-check"></i> Support prioritaire</li>
+                            <li><i className="fas fa-check"></i> <strong>10</strong> analyses de CV par mois</li>
+                            <li><i className="fas fa-check"></i> <strong>20</strong> entretiens & feedbacks par mois</li>
+                            <li><i className="fas fa-check"></i> accés exclusif aux nouvelles fonctionnalités</li>
                         </ul>
                     </div>
                     <div className="plan-action">

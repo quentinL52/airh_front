@@ -1,9 +1,8 @@
 import React from 'react';
 import { useAuth, useClerk } from '@clerk/clerk-react';
-import paymentService from '../../services/paymentService';
 
 function Pricing() {
-    const { isSignedIn, getToken } = useAuth();
+    const { isSignedIn } = useAuth();
     const { openSignIn } = useClerk();
 
     const handleFreemiumClick = () => {
@@ -14,27 +13,13 @@ function Pricing() {
         }
     };
 
-    const handlePremiumClick = async () => {
+    const handlePremiumClick = () => {
         if (!isSignedIn) {
             openSignIn();
             return;
         }
-        try {
-            const priceId = import.meta.env.VITE_STRIPE_PREMIUM_PRICE_ID;
-            if (!priceId) {
-                console.error("Price ID not found in environment variables");
-                alert("Erreur de configuration: ID de prix manquant.");
-                return;
-            }
-            const token = await getToken();
-            const session = await paymentService.createCheckoutSession(priceId, token);
-            if (session && session.url) {
-                window.location.href = session.url;
-            }
-        } catch (error) {
-            console.error("Failed to start checkout", error);
-            alert("Une erreur est survenue lors de l'initialisation du paiement.");
-        }
+        // Redirige vers le tab abonnement (PricingTable Clerk gère le checkout)
+        window.location.href = '/home?section=abonnement';
     };
 
     return (

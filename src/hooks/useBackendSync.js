@@ -7,24 +7,33 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
  * Sync Clerk user with backend.
  * Returns { syncDone, enterpriseRejected } so ProtectedRoute
  * can gate enterprise pages until verification completes.
+ *
+ * Pour les candidats déjà enregistrés : syncDone démarre à true
+ * (via localStorage) pour éviter l'écran blanc au rechargement.
+ * Le sync s'effectue quand même en arrière-plan pour mettre à jour la DB.
  */
 export const useBackendSync = () => {
     const { getToken, isSignedIn, signOut } = useAuth();
     const { user, isLoaded } = useUser();
+
+    // Pour les candidats déjà synced, on lit le flag en localStorage
+    // afin de démarrer syncDone=true et éviter l'écran blanc
+    const wasAlreadySynced = () => {
+        if (!user?.id) return false;
+        return localStorage.getItem(`airh_synced_${user.id}`) === 'true';
+    };
+
     const [syncDone, setSyncDone] = useState(false);
     const [enterpriseRejected, setEnterpriseRejected] = useState(false);
 
-    // Stable refs to avoid re-triggering the effect when Clerk functions change reference
     const signOutRef = useRef(signOut);
     const getTokenRef = useRef(getToken);
     signOutRef.current = signOut;
     getTokenRef.current = getToken;
 
-    // Track if we already synced for this user to avoid duplicate calls
     const syncedRef = useRef(false);
 
     useEffect(() => {
-        // Wait until Clerk user object is fully loaded
         if (!isLoaded) return;
 
         if (!isSignedIn) {
@@ -36,10 +45,16 @@ export const useBackendSync = () => {
 
         if (!user || syncedRef.current) return;
 
+        // Si ce candidat a déjà été synced lors d'une session précédente,
+        // on débloque immédiatement le rendu et on sync en arrière-plan.
+        if (wasAlreadySynced()) {
+            setSyncDone(true);
+        }
+
         let isMounted = true;
         let attempt = 0;
         const maxAttempts = 6;
-        const delayMs = 3000; // 3 seconds between retries, giving Supabase/Clerk time
+        const delayMs = 3000;
 
         const attemptSync = async () => {
             if (!isMounted) return;
@@ -65,6 +80,8 @@ export const useBackendSync = () => {
                     if (isMounted) {
                         syncedRef.current = true;
                         setSyncDone(true);
+                        // Mémoriser que cet utilisateur est synced
+                        localStorage.setItem(`airh_synced_${user.id}`, 'true');
                     }
                 } else if (response.status === 403) {
                     const isEnterprise = user?.publicMetadata?.profil === 'entreprise';
@@ -73,7 +90,6 @@ export const useBackendSync = () => {
                         if (isMounted) setEnterpriseRejected(true);
                         await signOutRef.current();
                     } else {
-                        // Pour les candidats, un 403 ne doit pas provoquer une déconnexion
                         console.warn('Sync 403 for candidate user, proceeding without sign-out');
                         if (isMounted) {
                             syncedRef.current = true;
@@ -119,7 +135,7 @@ export const useBackendSync = () => {
         return () => {
             isMounted = false;
         };
-    }, [isSignedIn, user, isLoaded]); // Only re-run when auth state, user, or loading state changes
+    }, [isSignedIn, user, isLoaded]);
 
     return { syncDone, enterpriseRejected };
 };

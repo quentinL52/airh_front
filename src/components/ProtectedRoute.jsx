@@ -14,17 +14,7 @@ const ProtectedRoute = ({ children, requiredRole, syncDone, enterpriseRejected }
   const location = useLocation();
 
   if (!isLoaded || (isSignedIn && user && !user.id)) {
-    return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        backgroundColor: '#f8fafc'
-      }}>
-        <div style={{ padding: '2rem' }}>Chargement...</div>
-      </div>
-    );
+    return null;
   }
 
   if (!isSignedIn) {
@@ -47,19 +37,9 @@ const ProtectedRoute = ({ children, requiredRole, syncDone, enterpriseRejected }
       return <Navigate to={userRole === 'enterprise' ? "/enterprise" : "/"} replace />;
     }
 
-    // Attendre que le backend ait synchronisé l'utilisateur (créé dans Supabase)
-    // avant de rendre la page — évite les erreurs 404 sur les premiers appels API
-    if (!syncDone) {
-      return (
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-          backgroundColor: '#f8fafc'
-        }}>
-        </div>
-      );
+    // Pour enterprise uniquement : attendre la vérification company_users
+    if (requiredRole === 'enterprise' && !syncDone) {
+      return null;
     }
   }
 

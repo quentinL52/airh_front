@@ -34,7 +34,8 @@ const Layout = ({ children, activeSection, onSectionChange, user }) => {
             items: [
                 { id: 'jobs', label: 'Jobs', icon: 'fas fa-briefcase' },
                 { id: 'resume', label: 'Resume', icon: 'fas fa-file-alt' },
-                { id: 'feedbacks', label: 'Feedbacks', icon: 'fas fa-comments' }
+                { id: 'feedbacks', label: 'Feedbacks', icon: 'fas fa-comments' },
+                { id: 'abonnement', label: 'Abonnements', icon: 'fas fa-crown' }
             ]
         }
     ];

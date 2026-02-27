@@ -6,8 +6,9 @@ import ResumeTab from '../components/tabs/ResumeTab';
 import JobsTab from '../components/tabs/JobsTab';
 import InterviewTab from '../components/tabs/InterviewTab';
 import FeedbacksTab from '../components/tabs/FeedbacksTab';
+import SubscriptionTab from '../components/tabs/SubscriptionTab';
 
-import WelcomeAlert from '../components/dashboard/WelcomeAlert';
+import OnboardingPopup from '../components/dashboard/OnboardingPopup';
 import DashboardHeader from '../components/dashboard/DashboardHeader';
 import GettingStarted from '../components/dashboard/GettingStarted';
 import Support from '../components/dashboard/Support';
@@ -25,7 +26,12 @@ const HomePage = ({ user }) => {
     // Derive activeSection directly from URL — single source of truth, no double render
     const activeSection = sectionParam || 'home';
 
-    const [isAlertVisible, setAlertVisible] = useState(true);
+    const needsOnboarding = user && !user.unsafeMetadata?.onboarded;
+    const [isOnboardingVisible, setIsOnboardingVisible] = useState(needsOnboarding);
+
+    useEffect(() => {
+        setIsOnboardingVisible(user && !user.unsafeMetadata?.onboarded);
+    }, [user?.unsafeMetadata?.onboarded]);
     const [cvData, setCvData] = useState(null);
     const [isLoadingCv, setIsLoadingCv] = useState(true);
     const { getToken } = useAuth();
@@ -66,8 +72,8 @@ const HomePage = ({ user }) => {
                         <DashboardHeader userName={userName} />
                         <GettingStarted onStepClick={handleSectionChange} />
                         <Support user={user} cvData={cvData} />
-                        {isAlertVisible && (
-                            <WelcomeAlert userName={userName} onClose={() => setAlertVisible(false)} />
+                        {isOnboardingVisible && (
+                            <OnboardingPopup onClose={() => setIsOnboardingVisible(false)} />
                         )}
                     </div>
                 );
@@ -89,14 +95,16 @@ const HomePage = ({ user }) => {
                 return <InterviewTab jobId={jobIdParam} reset={resetParam} />;
             case 'feedbacks':
                 return <FeedbacksTab />;
+            case 'abonnement':
+                return <SubscriptionTab />;
             default:
                 return (
                     <div className="home-dashboard">
                         <DashboardHeader userName={userName} />
                         <GettingStarted onStepClick={handleSectionChange} />
                         <Support user={user} cvData={cvData} />
-                        {isAlertVisible && (
-                            <WelcomeAlert userName={userName} onClose={() => setAlertVisible(false)} />
+                        {isOnboardingVisible && (
+                            <OnboardingPopup onClose={() => setIsOnboardingVisible(false)} />
                         )}
                     </div>
                 );

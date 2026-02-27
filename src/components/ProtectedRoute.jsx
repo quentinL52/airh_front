@@ -58,7 +58,6 @@ const ProtectedRoute = ({ children, requiredRole, syncDone, enterpriseRejected }
           height: '100vh',
           backgroundColor: '#f8fafc'
         }}>
-          <div style={{ padding: '2rem' }}>Connexion en cours...</div>
         </div>
       );
     }

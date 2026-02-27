@@ -36,7 +36,6 @@ function Landing() {
         backgroundColor: '#f8fafc',
         gap: '1rem'
       }}>
-        <div style={{ fontSize: '1.1rem', color: '#374151' }}>Connexion en cours...</div>
       </div>
     );
   }

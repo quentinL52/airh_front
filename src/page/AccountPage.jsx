@@ -17,11 +17,34 @@ const AccountPage = () => {
     // Form State - Only First Name
     const [firstName, setFirstName] = useState('');
 
+    // Credit State
+    const [creditData, setCreditData] = useState(null);
+
     useEffect(() => {
         if (isLoaded && user) {
             setFirstName(user.firstName || '');
         }
     }, [isLoaded, user]);
+
+    useEffect(() => {
+        const fetchCredits = async () => {
+            if (!isLoaded || !user) return;
+            try {
+                const token = await getToken();
+                if (!token) return;
+                const response = await fetch(`${API_BASE_URL}/auth/validate`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    setCreditData(data.user);
+                }
+            } catch (err) {
+                console.error("Failed to fetch credits:", err);
+            }
+        };
+        fetchCredits();
+    }, [isLoaded, user, getToken]);
 
     const handleUpdateProfile = async () => {
         setIsUpdating(true);
@@ -150,6 +173,25 @@ const AccountPage = () => {
                                 "Enregistrer"
                             )}
                         </button>
+                    </div>
+                </div>
+
+                {/* Subscriptions & Credits Section (Read-Only) */}
+                <div className="account-section">
+                    <h2 className="section-title">Abonnement & Crédits</h2>
+                    <div className="credits-display-grid">
+                        <div className="credit-item">
+                            <span className="credit-label">Formule :</span>
+                            <span className="credit-value">{creditData?.subscription_plan || 'Gratuite'}</span>
+                        </div>
+                        <div className="credit-item">
+                            <span className="credit-label">Entretiens restants :</span>
+                            <span className="credit-value">{creditData ? creditData.interview_credits : '...'}</span>
+                        </div>
+                        <div className="credit-item">
+                            <span className="credit-label">Analyses de CV restantes :</span>
+                            <span className="credit-value">{creditData ? creditData.cv_credits : '...'}</span>
+                        </div>
                     </div>
                 </div>
 

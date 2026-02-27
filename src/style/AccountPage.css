@@ -223,3 +223,33 @@
     box-shadow: none;
     transform: none;
 }
+
+/* Credits Section */
+.credits-display-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+    background-color: #F7F6FF;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #E8E6F0;
+}
+
+.credit-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.credit-label {
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.credit-value {
+    color: #111827;
+    font-weight: 600;
+    font-size: 1.1rem;
+}

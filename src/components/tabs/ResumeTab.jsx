@@ -269,7 +269,29 @@ const ResumeTab = ({ user, cvData, isLoading, onRefresh }) => {
     const [statusMessage, setStatusMessage] = useState({ text: '', type: '' });
     const [isDragOver, setIsDragOver] = useState(false);
     const [isContactPopupOpen, setContactPopupOpen] = useState(false);
+    const [userCredits, setUserCredits] = useState(null);
     const fileInputRef = useRef(null);
+
+    // Fetch user credits
+    React.useEffect(() => {
+        const fetchCredits = async () => {
+            try {
+                const token = await getToken();
+                if (!token) return;
+                const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+                const response = await fetch(`${API_BASE_URL}/auth/validate`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    setUserCredits(data.user);
+                }
+            } catch (err) {
+                console.error("Failed to fetch credits in ResumeTab:", err);
+            }
+        };
+        fetchCredits();
+    }, [getToken]);
 
     const handleFileSelect = (file) => {
         if (!file) {
@@ -289,7 +311,8 @@ const ResumeTab = ({ user, cvData, isLoading, onRefresh }) => {
 
     const isFileTooLarge = selectedFile && selectedFile.size > 800 * 1024;
     const isInvalidType = selectedFile && selectedFile.type !== 'application/pdf';
-    const canUpload = selectedFile && !isFileTooLarge && !isInvalidType;
+    const outOfCredits = userCredits && userCredits.cv_credits <= 0;
+    const canUpload = selectedFile && !isFileTooLarge && !isInvalidType && !outOfCredits;
 
     const handleUpload = async () => {
         if (!selectedFile) return;
@@ -366,6 +389,7 @@ const ResumeTab = ({ user, cvData, isLoading, onRefresh }) => {
                         onClick={handleUpload}
                         disabled={!canUpload || isUploading}
                         className="btn-primary"
+                        title={outOfCredits ? "Vous avez atteint la limite d'analyse gratuite (1 CV maximum)." : ""}
                     >
                         Analyser
                     </button>
@@ -375,6 +399,18 @@ const ResumeTab = ({ user, cvData, isLoading, onRefresh }) => {
                         </button>
                     )}
                 </div>
+
+                {outOfCredits && (
+                    <div style={{ color: '#dc2626', marginTop: '1rem', fontSize: '0.9rem', textAlign: 'center' }}>
+                        Vous avez atteint la limite d'analyse gratuite (1 CV maximum).
+                    </div>
+                )}
+
+                {userCredits && !outOfCredits && (
+                    <div style={{ color: 'var(--text-secondary)', marginTop: '0.5rem', fontSize: '0.85rem', textAlign: 'center' }}>
+                        Crédits restants : {userCredits.cv_credits}
+                    </div>
+                )}
 
                 <div className="roni-explanation">
                     <p>

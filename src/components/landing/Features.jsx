@@ -8,9 +8,9 @@ function Features() {
         <img src={candidatImg} alt="Candidat" className="feature-image" />
         <h2 className="feature-title">Pour les Candidats</h2>
         <ul className="feature-list">
-          <li><strong>Entraînez-vous de manière ciblée :</strong> Nous travaillons à vous proposer des simulations basées sur les compétences clés recherchées dans les offres d'emploi et celles présentes dans votre CV.</li>
-          <li><strong>Recevez des retours constructifs :</strong> Nous souhaitons vous fournir une analyse de vos réponses pour vous aider à identifier vos points forts et les aspects à améliorer.</li>
-          <li><strong>Gagnez en assurance :</strong> Notre but est de vous permettre de vous familiariser avec le format des entretiens et de réduire le stress lié à cette étape cruciale.</li>
+          <li><strong>Gagnez en assurance :</strong> L'étape d'entretien est souvent celle pour laquelle les candidats sont le moins préparés, Roni est la pour vous y aider. </li>
+          <li><strong>Recevez des retours constructifs :</strong> A l'issue de votre entretien, Roni vous fournit une analyse de vos réponses pour vous aider à identifier vos points forts et les aspects à améliorer.</li>
+          <li><strong>Evaluez votre CV :</strong> Avec notre moteur d'analyse, vous pouvez obtenir des retours constructifs sur votre CV.</li>
         </ul>
       </div>
 

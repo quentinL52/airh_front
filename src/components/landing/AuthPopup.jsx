@@ -43,7 +43,8 @@ const AuthPopup = ({ isOpen, onClose, isEnterprise = false }) => {
         {/* Clerk's SignIn component handles everything */}
         <SignIn
           forceRedirectUrl={isEnterprise ? "/enterprise/dashboard" : "/home"}
-          signUpForceRedirectUrl="/home"
+          signUpForceRedirectUrl={isEnterprise ? "/enterprise/dashboard" : "/home"}
+          fallbackRedirectUrl={isEnterprise ? "/enterprise/dashboard" : "/home"}
           appearance={
             isEnterprise
               ? {

@@ -80,7 +80,6 @@ export const useBackendSync = () => {
                     if (isMounted) {
                         syncedRef.current = true;
                         setSyncDone(true);
-                        // Mémoriser que cet utilisateur est synced
                         localStorage.setItem(`airh_synced_${user.id}`, 'true');
                     }
                 } else if (response.status === 403) {

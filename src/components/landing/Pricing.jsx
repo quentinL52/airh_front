@@ -18,7 +18,6 @@ function Pricing() {
             openSignIn();
             return;
         }
-        // Redirige vers le tab abonnement (PricingTable Clerk gère le checkout)
         window.location.href = '/home?section=abonnement';
     };
 
@@ -34,10 +33,10 @@ function Pricing() {
                     </div>
                     <ul className="pricing-features">
                         <li>
-                            <strong>1</strong> extraction de CV par mois
+                            <strong>4</strong> extraction de CV par mois
                         </li>
                         <li>
-                            <strong>5</strong> entretiens et feedbacks par mois
+                            <strong>10</strong> entretiens et feedbacks par mois
                         </li>
                     </ul>
                     <button className="cta-button pricing-btn" onClick={handleFreemiumClick}>Choisir Freemium</button>
@@ -51,10 +50,10 @@ function Pricing() {
                     </div>
                     <ul className="pricing-features">
                         <li>
-                            <strong>Jusqu'à 10</strong> extractions de CV par mois
+                            <strong>40</strong> extractions de CV par mois
                         </li>
                         <li>
-                            <strong>40</strong> entretiens et feedbacks par mois
+                            <strong>100</strong> entretiens et feedbacks par mois
                         </li>
                     </ul>
                     <button className="cta-button pricing-btn primary" onClick={handlePremiumClick}>Choisir Premium</button>

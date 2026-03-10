@@ -203,36 +203,36 @@ const RecommandationsDisplay = ({ cvData }) => {
                         </div>
 
                         {toArray(qualite.points_forts).length > 0 && (
-                            <div className="quality-section">
-                                <h6 className="quality-section-title">Points forts</h6>
-                                <ul className="quality-list">
+                            <div className="project-field-card">
+                                <span className="project-field-label">Points forts</span>
+                                <ul className="project-list">
                                     {toArray(qualite.points_forts).map((p, i) => <li key={i}>{formatLongText(p)}</li>)}
                                 </ul>
                             </div>
                         )}
 
                         {toArray(qualite.red_flags).length > 0 && (
-                            <div className="quality-section">
-                                <h6 className="quality-section-title">Points de vigilance</h6>
-                                <ul className="quality-list">
+                            <div className="project-field-card">
+                                <span className="project-field-label">Points de vigilance</span>
+                                <ul className="project-list">
                                     {toArray(qualite.red_flags).map((flag, i) => <li key={i}>{formatLongText(flag)}</li>)}
                                 </ul>
                             </div>
                         )}
 
                         {toArray(qualite.conseils_prioritaires).length > 0 && (
-                            <div className="quality-section">
-                                <h6 className="quality-section-title">Conseils prioritaires</h6>
-                                <ul className="quality-list">
+                            <div className="project-field-card">
+                                <span className="project-field-label">Conseils prioritaires</span>
+                                <ul className="project-list">
                                     {toArray(qualite.conseils_prioritaires).map((c, i) => <li key={i}>{formatLongText(c)}</li>)}
                                 </ul>
                             </div>
                         )}
 
                         {qualite.adaptation_seniorite && (
-                            <div className="quality-section">
-                                <h6 className="quality-section-title">Le point de vue de Roni</h6>
-                                <div className="quality-text-box">{formatLongText(qualite.adaptation_seniorite)}</div>
+                            <div className="project-verdict-box">
+                                <span className="project-verdict-label">Le point de vue de Roni</span>
+                                <div className="project-verdict-text">{formatLongText(qualite.adaptation_seniorite)}</div>
                             </div>
                         )}
                     </div>
@@ -320,6 +320,9 @@ const ResumeTab = ({ user, cvData, isLoading, onRefresh }) => {
         setStatusMessage({ text: 'Analyse de votre CV en cours, veuillez patienter...', type: 'info' });
         try {
             const token = await getToken();
+            if (cvData) {
+                await resumeService.deleteResume(token);
+            }
             await resumeService.uploadResume(selectedFile, token);
             setStatusMessage({ text: 'Analyse terminée avec succès !', type: 'success' });
             setSelectedFile(null);
@@ -389,7 +392,7 @@ const ResumeTab = ({ user, cvData, isLoading, onRefresh }) => {
                         onClick={handleUpload}
                         disabled={!canUpload || isUploading}
                         className="btn-primary"
-                        title={outOfCredits ? "Vous avez atteint la limite d'analyse gratuite (1 CV maximum)." : ""}
+                        title={outOfCredits ? "Vous avez atteint la limite d'analyse gratuite." : ""}
                     >
                         Analyser
                     </button>
@@ -402,7 +405,7 @@ const ResumeTab = ({ user, cvData, isLoading, onRefresh }) => {
 
                 {outOfCredits && (
                     <div style={{ color: '#dc2626', marginTop: '1rem', fontSize: '0.9rem', textAlign: 'center' }}>
-                        Vous avez atteint la limite d'analyse gratuite (1 CV maximum).
+                        Vous avez atteint la limite d'analyse gratuite.
                     </div>
                 )}
 

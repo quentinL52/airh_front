@@ -92,6 +92,10 @@ function App() {
     <ClerkProvider
       publishableKey={CLERK_KEY}
       afterSignOutUrl="/"
+      signInForceRedirectUrl="/home"
+      signUpForceRedirectUrl="/home"
+      afterSignInUrl="/home"
+      afterSignUpUrl="/home"
     >
       <Router>
         <AppRoutes />

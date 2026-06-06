@@ -20,9 +20,15 @@ const AccountPage = () => {
     // Credit State
     const [creditData, setCreditData] = useState(null);
 
+    // Visibility State
+    const [isProfileVisible, setIsProfileVisible] = useState(true);
+
     useEffect(() => {
         if (isLoaded && user) {
             setFirstName(user.firstName || '');
+            if (user.unsafeMetadata && user.unsafeMetadata.profileVisible !== undefined) {
+                setIsProfileVisible(user.unsafeMetadata.profileVisible);
+            }
         }
     }, [isLoaded, user]);
 
@@ -55,6 +61,14 @@ const AccountPage = () => {
 
             if (currentFirst !== newFirst) {
                 updateParams.firstName = newFirst === '' ? null : newFirst;
+            }
+
+            const currentVisible = user.unsafeMetadata?.profileVisible ?? true;
+            if (isProfileVisible !== currentVisible) {
+                updateParams.unsafeMetadata = {
+                    ...user.unsafeMetadata,
+                    profileVisible: isProfileVisible
+                };
             }
 
             if (Object.keys(updateParams).length > 0) {
@@ -156,6 +170,37 @@ const AccountPage = () => {
                             className="form-input"
                             placeholder="Votre prénom"
                         />
+                    </div>
+
+                    <div className="form-group visibility-toggle-group" style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'flex-start', gap: '1rem', padding: '1rem', backgroundColor: '#f9fafb', borderRadius: '0.5rem', border: '1px solid #e5e7eb' }}>
+                        <div style={{ paddingTop: '2px' }}>
+                            <label style={{ position: 'relative', display: 'inline-block', width: '44px', height: '24px', flexShrink: 0, cursor: 'pointer', margin: 0 }}>
+                                <input 
+                                    type="checkbox" 
+                                    checked={isProfileVisible} 
+                                    onChange={(e) => setIsProfileVisible(e.target.checked)} 
+                                    style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }} 
+                                />
+                                <span style={{
+                                    position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                                    backgroundColor: isProfileVisible ? '#4f46e5' : '#d1d5db', transition: '.2s', borderRadius: '24px'
+                                }}>
+                                    <span style={{
+                                        position: 'absolute', height: '18px', width: '18px',
+                                        left: isProfileVisible ? '22px' : '3px', bottom: '3px', backgroundColor: 'white',
+                                        transition: '.2s', borderRadius: '50%', boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                                    }}></span>
+                                </span>
+                            </label>
+                        </div>
+                        <div className="visibility-info">
+                            <label style={{ display: 'block', margin: '0 0 0.25rem 0', fontWeight: 600, color: '#111827', cursor: 'pointer' }} onClick={() => setIsProfileVisible(!isProfileVisible)}>
+                                Rendre mon profil visible aux recruteurs
+                            </label>
+                            <p style={{ margin: 0, fontSize: '0.875rem', color: '#6b7280', lineHeight: 1.5 }}>
+                                Les entreprises qui recrutent sur AIRH pourront voir votre profil et votre score. Vous pouvez désactiver cette option à tout moment.
+                            </p>
+                        </div>
                     </div>
 
                     <div className="action-buttons-profile">

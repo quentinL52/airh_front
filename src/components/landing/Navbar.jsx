@@ -78,13 +78,17 @@ function Navbar({ isEnterprise: isEnterprisePage = false }) {
                             </div>
                         ) : (
                             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                                {!isEnterprise && (
+                                {!isEnterprise ? (
                                     <Link to="/enterprise" className="enterprise-btn">
                                         Vous recrutez ?
                                     </Link>
+                                ) : (
+                                    <Link to="/" className="enterprise-btn">
+                                        Vous êtes candidat ?
+                                    </Link>
                                 )}
                                 <button onClick={handleAuthButtonClick} className="cta-button">
-                                    {isEnterprise ? "Connexion Entreprise" : "Se connecter / s'inscrire"}
+                                    {isEnterprise ? "Commencer à recruter" : "Faire analyser mon CV"}
                                 </button>
                             </div>
                         )}

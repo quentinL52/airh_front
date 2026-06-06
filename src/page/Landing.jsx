@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import '../style/Landing.css';
 import Navbar from '../components/landing/Navbar';
 import Hero from '../components/landing/Hero';
-import Features from '../components/landing/Features';
-import Pricing from '../components/landing/Pricing';
+import ProblemVision from '../components/landing/ProblemVision';
+import HowItWorks from '../components/landing/HowItWorks';
+import ProductProof from '../components/landing/ProductProof';
+import CandidateBenefits from '../components/landing/CandidateBenefits';
+import FinalCta from '../components/landing/FinalCta';
 import Footer from '../components/landing/Footer';
-
 
 function Landing() {
   const { isSignedIn, isLoaded } = useAuth();
@@ -48,13 +50,18 @@ function Landing() {
   }
 
   return (
-    <div className="landing-container">
+    <>
       <Navbar />
-      <Hero />
-      <Features />
-      <Pricing />
-      <Footer />
-    </div>
+      <div className="landing-container">
+        <Hero />
+        <ProblemVision />
+        <HowItWorks />
+        <ProductProof />
+        <CandidateBenefits />
+        <FinalCta />
+        <Footer />
+      </div>
+    </>
   );
 }
 

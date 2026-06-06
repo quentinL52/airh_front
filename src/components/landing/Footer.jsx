@@ -1,16 +1,28 @@
-function Footer() {
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+function Footer({ isEnterprise = false }) {
   return (
     <footer className="footer-section">
-      <p className="footer-text">
-        Nous sommes en phase de développement et nous nous efforçons de créer un outil qui réponde aux besoins réels des candidats et des recruteurs dans le secteur de la data et de l'IA.
-        <br /><br />
-        Restez informés des mises à jour et soyez parmi les premiers à tester notre solution !
-      </p>
-      <div className="footer-links">
-        <a href="https://www.linkedin.com/in/loumeau-quentin/" target="_blank" rel="noopener noreferrer" className="footer-link">
-          <i className="fab fa-linkedin"></i>
-          Me suivre sur LinkedIn
-        </a>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1rem', width: '100%' }}>
+        <div className="footer-top">
+          <div className="footer-brand">
+            <span className="footer-logo">AIRH</span>
+            <p className="footer-baseline">Votre talent mérite bien plus qu'un CV</p>
+          </div>
+          <div className="footer-links-group">
+            <Link to="/about" className="footer-text-link">À propos</Link>
+            <a href="mailto:contact@airh.info" className="footer-text-link">Contact</a>
+            <a href="https://www.linkedin.com/company/112043111" target="_blank" rel="noopener noreferrer" className="footer-text-link">LinkedIn</a>
+            <a href="mailto:contact@airh.info?subject=Contact%20Ecole%20ou%20Bootcamp" className="footer-text-link">Vous êtes une école ou un bootcamp ?</a>
+          </div>
+          <div className="footer-links-group">
+            <a href="#" className="footer-text-link">Mentions légales</a>
+            <a href="#" className="footer-text-link">Confidentialité</a>
+            <a href="#" className="footer-text-link">CGU</a>
+            {isEnterprise && <Link to="/" className="footer-text-link" style={{ marginTop: '1rem', fontWeight: 'bold' }}>Vous êtes candidat ?</Link>}
+          </div>
+        </div>
       </div>
     </footer>
   );

@@ -1,12 +1,16 @@
+import React from 'react';
+
 function Hero() {
   return (
     <section className="hero-section">
-      <h1 className="hero-title">
-        Améliorez vos Entretiens Tech avec Notre Simulateur d'Entretien IA
-      </h1>
-      <p className="hero-description">
-        Nous développons un outil innovant pour aider les candidats et les recruteurs à mieux préparer et mener les entretiens d'embauche dans les domaines Tech. Notre objectif est de créer un simulateur d'entretien intelligent qui offre une expérience pratique et personnalisée.
-      </p>
+      <div className="hero-content">
+        <h1 className="hero-title">
+          En 2026, le talent ne tient plus sur un CV.
+        </h1>
+        <p className="hero-description">
+          AIRH révèle ce que tu vaux vraiment : tes compétences réelles, tes projets, ton potentiel au-delà d'une page A4. Ton CV et un entretien avec Roni, notre agent IA, enrichissent ton profil.
+        </p>
+      </div>
     </section>
   );
 }

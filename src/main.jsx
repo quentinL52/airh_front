@@ -5,6 +5,7 @@ import { ClerkProvider } from '@clerk/clerk-react';
 import Landing from './page/Landing.jsx';
 import EnterpriseLanding from './page/EnterpriseLanding.jsx';
 import HomePage from './page/HomePage.jsx';
+import AboutPage from './page/AboutPage.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import AuthCallback from './page/AuthCallback.jsx';
 import AccountPage from './page/AccountPage.jsx';
@@ -33,6 +34,7 @@ function AppRoutes() {
     <Routes>
       {/* Public routes */}
       <Route path="/" element={<Landing />} />
+      <Route path="/about" element={<AboutPage />} />
       <Route path="/auth/callback" element={<AuthCallback />} />
       <Route path="/enterprise" element={<EnterpriseLanding />} />
 
